@@ -1,4 +1,4 @@
-"""Module qui permet l'affichage des sphères."""
+"""Module qui permet les differents affichages."""
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
@@ -8,68 +8,58 @@ import numpy as np
 import random
 
 
-def affichage(liste_x, liste_y, liste_aire):
+def affichage(matrice_aire):
     """
-    Crée le graphique représentant les sphères.
+    Cree le graphique representant les spheres.
 
     Parameters
     ----------
-    liste_x : list of float
-        Liste des coordonnées x des centres des sphères.
-    liste_y : list of float
-        Liste des coordonnées y des centres des sphères.
-    liste_aire : list of float
-        Liste des aires des centres des sphères.
-
-    Raises
-    ------
-    ValueError
-        Si les listes ne sont pas de même taille.
+    matrice_aire : np.array of float
+        Matrice des aires des spheres.
 
     Returns
     -------
     None.
 
     """
-    # On vérifie que les listes sont de même taille
-    if not (len(liste_x) == len(liste_y) and len(liste_y) == len(liste_aire)):
-        raise ValueError("Les tailles des listes sont différentes !")
-
-    fig, ax = plt.subplots()  # Crée le graphique
+    fig, ax = plt.subplots()  # Cree le graphique
 
     cmap = plt.get_cmap('viridis')  # Choix du jeu de couleurs
-    norm = mcolors.Normalize(vmin=min(liste_aire), vmax=max(liste_aire))
+    norm = mcolors.Normalize(vmin=np.min(matrice_aire),
+                             vmax=np.max(matrice_aire))
     sm = ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])  # Permet l'utilisation d'une colorbar
 
-    rayon_max = np.sqrt(liste_aire[0]/np.pi)  # On va chercher le rayon maximal
-    for i in range(len(liste_x)):  # Création des cercles
-        color = cmap(norm(liste_aire[i]))  # Choix de la couleur du cercle i
-        rayon = np.sqrt(liste_aire[i]/np.pi)  # Calcule le rayon
-        circle = Circle((liste_x[i], liste_y[i]), radius=rayon,
-                        fill=True, color=color)  # Crée le cercle i
-        ax.add_patch(circle)  # Ajout du cercle
-        if rayon > rayon_max:  # Si le rayon i est supérieur au rayon max
-            rayon_max = rayon  # On met à jour le rayon max
+    matrice_rayon = np.sqrt(matrice_aire/np.pi)
+
+    espacement = 3 * np.max(matrice_rayon)  # Espace entre deux centres
+
+    for i in range(len(matrice_aire)):  # Creation des cercles
+        for j in range(len(matrice_aire[0])):
+            color = cmap(norm(matrice_aire[i][j]))  # Couleur du cercle i, j
+            circle = Circle((i * espacement, j * espacement),
+                            radius=matrice_rayon[i][j],
+                            fill=True, color=color)  # Cree le cercle i, j
+            ax.add_patch(circle)  # Ajout du cercle
 
     cbar = plt.colorbar(sm, ax=ax)  # Ajoute la colorbar
     cbar.set_label('A\u1D3F (m²)')  # Titre de la colorbar
 
-    # Limites des axes vallent les positions extrêmes décalées du rayon max
-    ax.set_xlim(min(liste_x) - rayon_max, max(liste_x) + rayon_max)
-    ax.set_ylim(min(liste_y) - rayon_max, max(liste_y) + rayon_max)
+    # Limites des axes vallent les positions extremes decalees du rayon max
+    ax.set_xlim(- espacement/2,
+                (len(matrice_rayon) - 1) * espacement + espacement / 2)
+    ax.set_ylim(- max(matrice_rayon[0]),
+                (len(matrice_rayon[0]) - 1) * espacement + espacement / 2)
 
     # Affichez le graphique
-    plt.axis('scaled')  # Permet un repère normé
-    plt.xlabel('x (m)')  # Nom de l'axe x
-    plt.ylabel('y (m)')  # Nom de l'axe y
+    plt.axis('scaled')  # Permet un repere norme
+    plt.xlabel('x')  # Nom de l'axe x
+    plt.ylabel('y')  # Nom de l'axe y
     plt.savefig("aire.png")  # Permet de sauvegarder le fichier
     plt.show()  # Affiche le graphique
 
 
 if __name__ == "__main__":
-    liste_x = ([0.001] * 5 + [0.003] * 5 + [0.005] * 5 + [0.007] * 5
-               + [0.009] * 5)
-    liste_y = [0.001, 0.003, 0.005, 0.007, 0.009] * 5
-    liste_aire = [random.random()/10**6 for i in range(25)]
-    affichage(liste_x, liste_y, liste_aire)
+    matrice_aire = np.array([[random.random()/10**6 for i in range(5)]
+                             for j in range(5)])
+    affichage(matrice_aire)
