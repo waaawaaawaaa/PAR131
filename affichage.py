@@ -8,7 +8,7 @@ import numpy as np
 import random
 
 
-def affichage(matrice_aire):
+def spheres(matrice_aire):
     """
     Cree le graphique representant les spheres.
 
@@ -59,7 +59,30 @@ def affichage(matrice_aire):
     plt.show()  # Affiche le graphique
 
 
+def loi(aires, forces):
+    """
+    Cree le graphique affichant l'aire de contact en fonction de la force.
+
+    Parameters
+    ----------
+    aires : list of float
+        Liste avec les valeurs des aires totales.
+    forces : list of float
+        Liste avec les valeurs des forces.
+
+    Returns
+    -------
+    None.
+
+    """
+    plt.plot(forces, aires)
+    plt.xlabel('Force (N)')
+    plt.ylabel('A\u1D3F (m²)')
+    plt.savefig("loi.png")  # Permet de sauvegarder le fichier
+    plt.show()
+
+
 if __name__ == "__main__":
     matrice_aire = np.array([[random.random()/10**6 for i in range(5)]
                              for j in range(5)])
-    affichage(matrice_aire)
+    spheres(matrice_aire)
