@@ -5,7 +5,7 @@ import affichage
 import random
 
 
-def loi_GW(rayons_courbures, hauteurs, delta):
+def loi_indentation(rayons_courbures, hauteurs, delta):
     """
     Fonction calculant les aires de contact et la force totale.
 
@@ -44,19 +44,44 @@ def loi_GW(rayons_courbures, hauteurs, delta):
     return aires_contact, force_tot
 
 
+def loi_totale(rayons_courbures, hauteurs):
+    """
+    Fonction calculant les points pour la courbe aire en fonction de la force.
+
+    Parameters
+    ----------
+    rayons_courbures : np.array of float
+        Matrice avec les rayons de courbures des sphères.
+    hauteurs : np.array of float
+        Matrice avec les hauteurs des sphères..
+
+    Returns
+    -------
+    aires_totales : list of float
+        Valeurs des aires de contact totale en fonction de la force.
+    forces_totales : list of float
+        Valeurs des forces.
+
+    """
+    N = 1000  # Nombre de points
+    aires_totales = []  # Liste des aires
+    forces_totales = []  # Liste des forces
+    hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
+    for i in range(N):
+        delta = i * hauteur_max / N  # Valeur de l'indentation
+        # On récupère les aires de chaque sphère et la force
+        aires_contact, force = loi_indentation(rayons_courbures, hauteurs,
+                                               delta)
+        aire_totale = np.sum(aires_contact)  # Aire de contacte totale
+        aires_totales.append(aire_totale)
+        forces_totales.append(force)
+    return aires_totales, forces_totales
+
+
 if __name__ == "__main__":
     rayons_courbures = np.array([[random.random()/100 for i in range(5)]
                                  for j in range(5)])
     hauteurs = np.array([[random.random()/1000 for i in range(5)]
                          for j in range(5)])
-    aires_totales = []
-    forces_totales = []
-    for delta in range(1000):
-        aires_contact, force = loi_GW(rayons_courbures, hauteurs,
-                                      delta / (10 ** 6))
-        aires_contact, force = loi_GW(rayons_courbures, hauteurs, delta)
-        aire_totale = np.sum(aires_contact)
-        aires_totales.append(aire_totale)
-        forces_totales.append(force)
+    aires_totales, forces_totales = loi_totale(rayons_courbures, hauteurs)
     affichage.loi(aires_totales, forces_totales)
-    affichage.spheres(aires_contact)
