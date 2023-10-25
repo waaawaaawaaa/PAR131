@@ -3,6 +3,8 @@
 import numpy as np
 import affichage
 import random
+from numpy.random import exponential
+import matplotlib.pyplot as plt
 
 
 def loi_indentation(rayons_courbures, hauteurs, delta):
@@ -66,7 +68,8 @@ def loi_totale(rayons_courbures, hauteurs):
     N = 1000  # Nombre de points
     aires_totales = []  # Liste des aires
     forces_totales = []  # Liste des forces
-    hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
+    hauteur_max = np.max(hauteurs) # Donne la hauteur la plus elevee
+    hauteur_moitie = (3*hauteur_max) / 4
     for i in range(N):
         delta = i * hauteur_max / N  # Valeur de l'indentation
         # On récupère les aires de chaque sphère et la force
@@ -75,13 +78,22 @@ def loi_totale(rayons_courbures, hauteurs):
         aire_totale = np.sum(aires_contact)  # Aire de contacte totale
         aires_totales.append(aire_totale)
         forces_totales.append(force)
+        
+        if delta == hauteur_moitie:
+            affichage.spheres(aires_contact)
     return aires_totales, forces_totales
 
 
+            
+        
+
+
 if __name__ == "__main__":
-    rayons_courbures = np.array([[random.random()/100 for i in range(5)]
+    # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
+    rayons_courbures = np.array([[0.000526 for i in range(5)]
                                  for j in range(5)])
-    hauteurs = np.array([[random.random()/1000 for i in range(5)]
-                         for j in range(5)])
+    hauteurs = np.array(exponential(0.00002, (5,5)))
+    
     aires_totales, forces_totales = loi_totale(rayons_courbures, hauteurs)
     affichage.loi(aires_totales, forces_totales)
+    affichage.hauteur(hauteurs)

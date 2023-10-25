@@ -80,9 +80,19 @@ def loi(aires, forces):
     plt.ylabel('A\u1D3F (m²)')
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
+    
+def hauteur(hauteurs):
+    liste_hauteurs = [hauteur for i in hauteurs for hauteur in i]
+    N = 11  # Nombre de barres plus 1
+    hauteur_max = np.max(hauteurs)  # Hauteur maximale
+    bins = [i*hauteur_max/N for i in range(N)]  # Bornes des barres
+    plt.hist(liste_hauteurs, bins)
+    plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
+    plt.show()
 
 
 if __name__ == "__main__":
     matrice_aire = np.array([[random.random()/10**6 for i in range(5)]
                              for j in range(5)])
     spheres(matrice_aire)
+
