@@ -4,25 +4,24 @@ import numpy as np
 import affichage
 import random
 from numpy.random import exponential
-import matplotlib.pyplot as plt
 
 
 def loi_indentation(rayons_courbures, hauteurs, delta):
     """
-    Fonction calculant les aires de contact et la force totale.
+    Realise le calcul des aires de contact et de la force totale.
 
     Parameters
     ----------
-    rayons_courbures : np.array of float
+    rayons_courbures : np.array of floats
         Matrice avec les rayons de courbures des sphères.
-    hauteurs : np.array of float
+    hauteurs : np.array of floats
         Matrice avec les hauteurs des sphères.
     delta : float
         Indentation totale.
 
     Returns
     -------
-    aires_contact : np.array of float
+    aires_contact : np.array of floats
         Matrice avec les aires de contact de chaque sphère.
     force_tot : float
         Force totale exercee.
@@ -48,18 +47,18 @@ def loi_indentation(rayons_courbures, hauteurs, delta):
 
 def loi_totale(rayons_courbures, hauteurs):
     """
-    Fonction calculant les points pour la courbe aire en fonction de la force.
+    Realise le calcule des points pour la courbe aire en fonction de la force.
 
     Parameters
     ----------
-    rayons_courbures : np.array of float
+    rayons_courbures : np.array of floats
         Matrice avec les rayons de courbures des sphères.
-    hauteurs : np.array of float
+    hauteurs : np.array of floats
         Matrice avec les hauteurs des sphères..
 
     Returns
     -------
-    aires_totales : list of float
+    aires_totales : list of floats
         Valeurs des aires de contact totale en fonction de la force.
     forces_totales : list of float
         Valeurs des forces.
@@ -68,7 +67,7 @@ def loi_totale(rayons_courbures, hauteurs):
     N = 1000  # Nombre de points
     aires_totales = []  # Liste des aires
     forces_totales = []  # Liste des forces
-    hauteur_max = np.max(hauteurs) # Donne la hauteur la plus elevee
+    hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
     hauteur_moitie = (3*hauteur_max) / 4
     for i in range(N):
         delta = i * hauteur_max / N  # Valeur de l'indentation
@@ -78,22 +77,18 @@ def loi_totale(rayons_courbures, hauteurs):
         aire_totale = np.sum(aires_contact)  # Aire de contacte totale
         aires_totales.append(aire_totale)
         forces_totales.append(force)
-        
+
         if delta == hauteur_moitie:
             affichage.spheres(aires_contact)
     return aires_totales, forces_totales
-
-
-            
-        
 
 
 if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
     rayons_courbures = np.array([[0.000526 for i in range(5)]
                                  for j in range(5)])
-    hauteurs = np.array(exponential(0.00002, (5,5)))
-    
+    hauteurs = np.array(exponential(0.00002, (5, 5)))
+
     aires_totales, forces_totales = loi_totale(rayons_courbures, hauteurs)
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)

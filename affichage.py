@@ -14,7 +14,7 @@ def spheres(matrice_aire):
 
     Parameters
     ----------
-    matrice_aire : np.array of float
+    matrice_aire : np.array of floats
         Matrice des aires des spheres.
 
     Returns
@@ -65,9 +65,9 @@ def loi(aires, forces):
 
     Parameters
     ----------
-    aires : list of float
+    aires : list of floats
         Liste avec les valeurs des aires totales.
-    forces : list of float
+    forces : list of floats
         Liste avec les valeurs des forces.
 
     Returns
@@ -80,8 +80,22 @@ def loi(aires, forces):
     plt.ylabel('A\u1D3F (m²)')
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
-    
+
+
 def hauteur(hauteurs):
+    """
+    Cree l'histogramme des hauteurs.
+
+    Parameters
+    ----------
+    hauteurs : list of floats
+        Liste des hauteurs.
+
+    Returns
+    -------
+    None.
+
+    """
     liste_hauteurs = [hauteur for i in hauteurs for hauteur in i]
     N = 11  # Nombre de barres plus 1
     hauteur_max = np.max(hauteurs)  # Hauteur maximale
@@ -95,4 +109,3 @@ if __name__ == "__main__":
     matrice_aire = np.array([[random.random()/10**6 for i in range(5)]
                              for j in range(5)])
     spheres(matrice_aire)
-
