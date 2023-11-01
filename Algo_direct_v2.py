@@ -3,7 +3,6 @@
 import numpy as np
 import affichage
 import random
-from numpy.random import exponential
 from decimal import Decimal, getcontext
 
 # Définir la précision globale (par exemple, 10 décimales)
@@ -17,16 +16,16 @@ def loi_indentation(rayons_courbures, hauteurs, delta):
     Parameters
     ----------
     rayons_courbures : np.array of floats
-        Matrice avec les rayons de courbures des sphères.
+        Matrice avec les rayons de courbures des spheres.
     hauteurs : np.array of floats
-        Matrice avec les hauteurs des sphères.
+        Matrice avec les hauteurs des spheres.
     delta : float
         Indentation totale.
 
     Returns
     -------
     aires_contact : np.array of floats
-        Matrice avec les aires de contact de chaque sphère.
+        Matrice avec les aires de contact de chaque sphere.
     force_tot : float
         Force totale exercee.
 
@@ -56,9 +55,9 @@ def loi_totale(rayons_courbure, hauteurs):
     Parameters
     ----------
     rayons_courbure : np.array of floats
-        Matrice avec les rayons de courbure des sphères.
+        Matrice avec les rayons de courbure des spheres.
     hauteurs : np.array of floats
-        Matrice avec les hauteurs des sphères..
+        Matrice avec les hauteurs des spheres.
 
     Returns
     -------
@@ -83,12 +82,28 @@ def loi_totale(rayons_courbure, hauteurs):
         aires_totales.append(aire_totale)
         forces_totales.append(force)
 
-        # if delta == hauteur_moitie:
-        #     affichage.spheres(aires_contact)
+        if delta == hauteur_moitie:
+            affichage.spheres(aires_contact)
     return aires_totales, forces_totales
 
 
 def get_aire_totale(rayons_courbure, hauteurs, force):
+    """Retrouve l'aire totale pour une force donnée
+
+    Parameters
+    ----------
+    rayons_courbure : np.array of floats
+        Matrice avec les rayons de courbure des spheres.
+    hauteurs : np.array of floats
+        Matrice avec les hauteurs des spheres.
+    force : float
+        Force pour laquelle on veut l'aire totale.
+
+    Returns
+    -------
+    aire : float
+        Aire totale correspondant a la force.
+    """
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
     for i in range(len(forces_totales)):
         if round(forces_totales[i], 4) == force:  # Si on a la bonne force
@@ -100,7 +115,8 @@ if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
     rayons_courbures = np.array([[0.000526 for i in range(5)]
                                  for j in range(5)])
-    hauteurs = np.array([[random.randint(0, 120) / 10**6 for i in range(8)] for j in range(8)])
+    hauteurs = np.array([[random.randint(0, 120) / 10**6 for i in range(8)]
+                        for j in range(8)])
 
     aires_totales, forces_totales = loi_totale(rayons_courbures, hauteurs)
     affichage.loi(aires_totales, forces_totales)
