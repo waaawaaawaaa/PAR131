@@ -6,6 +6,7 @@ from decimal import Decimal, getcontext
 # Définir la précision globale (par exemple, 10 décimales)
 getcontext().prec = 15
 
+
 class Individu:
     """
     Classe qui represente un individu c'est-a-dire une surface.
