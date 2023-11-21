@@ -80,6 +80,42 @@ def loi(aires, forces):
     plt.ylabel('A\u1D3F (m²)')
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
+    
+    
+
+def superposer_lois(*listes, points=None):
+    """
+    Superpose différentes lois aire-force sur un même graphique, avec des
+    points particuliers.
+
+    Parameters
+    ----------
+    *listes : tuples of list of floats
+        Chaque tuple contient deux listes : la première avec les valeurs des
+        aires, et la deuxième avec les valeurs des forces.
+    points : list of tuples, optional
+        Liste de tuples contenant les coordonnées des points particuliers à 
+        afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
+
+    Returns
+    -------
+    None.
+
+    """
+    couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs distinctives
+    for i, (aires, forces) in enumerate(listes):
+        plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
+
+    if points:
+        points_forces, points_aires = zip(*points)
+        plt.scatter(points_forces, points_aires, color='red', marker='x', label='Points recherchés')
+
+    plt.xlabel('Force (N)')
+    plt.ylabel('Aire (m²)')
+    plt.title('Superposition de lois aire-force')
+    plt.legend()
+    plt.savefig("superposition_lois.png")
+    plt.show()
 
 
 def hauteur(hauteurs):
