@@ -78,8 +78,13 @@ def loi(aires, forces):
     plt.plot(forces, aires)
     plt.xlabel('Force (N)')
     plt.ylabel('A\u1D3F (m²)')
+    # Définir la plage des valeurs sur l'axe des x (forces) et y (aires) pour le zoom
+    plt.xlim(forces[0], forces[7500])  # Vous pouvez ajuster les indices selon vos besoins
+    plt.ylim(aires[0], aires[7500])    # Vous pouvez ajuster les indices
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
+    
+    
     
     
 
@@ -133,9 +138,9 @@ def hauteur(hauteurs):
 
     """
     liste_hauteurs = [hauteur for i in hauteurs for hauteur in i]
-    N = 11  # Nombre de barres plus 1
+    N = 60  # Nombre de barres plus 1
     hauteur_max = np.max(hauteurs)  # Hauteur maximale
-    bins = [i*hauteur_max/N for i in range(N)]  # Bornes des barres
+    bins = [i*hauteur_max/N for i in range(N+1)]  # Bornes des barres
     plt.hist(liste_hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()

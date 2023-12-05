@@ -61,7 +61,7 @@ def loi_totale(rayons_courbure, hauteurs):
         Valeurs des forces.
 
     """
-    N = 10000  # Nombre de points
+    N = 100000 # Nombre de points
     aires_totales = [0 for i in range(N)]  # Liste des aires
     forces_totales = [0 for i in range(N)]  # Liste des forces
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
@@ -113,13 +113,12 @@ if __name__ == "__main__":
     # valeurs en um
     rayons_courbure = np.array([[526 for i in range(8)]
                                 for j in range(8)])
-    somme = 0
-    for i in range(500):
-        hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
-                            for j in range(8)])
-        temps = time.time()  # On cherche la durée de loi_totale
-        aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
-        somme = somme + time.time() - temps
-    print(somme)
+    
+    hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
+                        for j in range(8)])
+    hauteurs[1][1] = 150
+    hauteurs[2][2] = 160
+    aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
+    
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)
