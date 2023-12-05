@@ -59,11 +59,14 @@ def score(individu, points):
 
     """
     score = 0
+    aire_0 = points[-1][1]  # Aire pour normalisee
+    force_0 = points[-1][0]  # Force pour normalisee
     for point in points:
-        aire = Algo_direct_v2.get_aire_totale(individu.get_rayons_courbure(),
-                                              individu.get_hauteurs(),
-                                              point[0])
-        score = score + (point[1] - aire)**2
+        force, aire = Algo_direct_v2.get_force_aire(individu.get_rayons_courbure(),
+                                                    individu.get_hauteurs(),
+                                                    point)
+        score = (score + ((point[1] - aire)/aire_0)**2
+                 + ((point[0] - force)/force_0)**2)
     return score
 
 
@@ -176,7 +179,7 @@ def genetique(points, limite=None):
     None.
 
     """
-    N = 10  # Taille de la population
+    N = 50  # Taille de la population
     population = creer_population(N)
     liste_courbes = []
     for i in range(100):  # On fait 100 generations
@@ -188,8 +191,9 @@ def genetique(points, limite=None):
                                                   meilleur_individu.get_hauteurs())
         liste_courbes.append((aires,forces))
         affichage.superposer_lois(liste_courbes, points=points)
+    affichage.loi(aires, forces)
     affichage.hauteur(meilleur_individu.get_hauteurs())
 
 
 if __name__ == "__main__":
-    genetique([(0.0120*10**14, 1.5*10**6)])
+    genetique([(861926869219, 619507)])

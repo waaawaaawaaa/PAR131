@@ -81,8 +81,11 @@ def loi_totale(rayons_courbure, hauteurs):
     return aires_totales, forces_totales
 
 
-def get_aire_totale(rayons_courbure, hauteurs, force):
-    """Retrouve l'aire totale pour une force donnee.
+def get_force_aire(rayons_courbure, hauteurs, point):
+    """Retrouve les points necessaires aux scores.
+
+    A partir d'un point, retrouve la force correspondant a l'aire de ce
+    point et l'aire correspondant a la force de ce point.
 
     Parameters
     ----------
@@ -90,21 +93,24 @@ def get_aire_totale(rayons_courbure, hauteurs, force):
         Matrice avec les rayons de courbure des spheres.
     hauteurs : np.array of floats
         Matrice avec les hauteurs des spheres.
-    force : float
-        Force pour laquelle on veut l'aire totale.
+    point : couple of float
+        Point que l'on souhaite atteindre (force, aire)
 
     Returns
     -------
+    force : float
+        Force correspondant a l'aire du point
     aire : float
-        Aire totale correspondant a la force.
+        Aire totale correspondant a la force du point
     """
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
-    for i in range(len(forces_totales)):
-        if round(forces_totales[i]/10**9) == round(force/10**9):  # Si on a la bonne force
-            aire = aires_totales[i]
-            return aire
-        # Si on a pas la bonne valeur
-    return aires_totales[-1]
+    i = 0
+    while i < len(forces_totales)-1 and abs(forces_totales[i] - point[0]) > 10**9:
+        i +=1  #Si c'est pas la bonne force, on passe a la suivante
+    j = 0
+    while j < len(forces_totales)-1 and abs(aires_totales[j] - point[1]) > 10**2:
+        j +=1  #Si c'est pas la bonne force, on passe a la suivante
+    return aires_totales[i], forces_totales[j]
 
 
 if __name__ == "__main__":
