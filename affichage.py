@@ -85,7 +85,7 @@ def loi(aires, forces):
     plt.show()
 
 
-def superposer_lois(*listes, points=None):
+def superposer_lois(listes, points=None):
     """
     Superpose différentes lois aire-force sur un même graphique, avec des
     points particuliers.
@@ -105,13 +105,9 @@ def superposer_lois(*listes, points=None):
 
     """
     couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs distinctives
-    if len(listes) == 1:  # Vérification pour un seul tuple dans listes
-        aires, forces = listes[0][0]  # Déballage du seul tuple
-        plt.plot(forces, aires, label='Loi 1', color='b')  # Par exemple, utilisez une couleur spécifique
-
-    else:
-        for i, (aires, forces) in enumerate(listes):
-            plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
+    for i in range(len(listes)):
+        aires, forces = listes[i]
+        plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
 
     if points:
         points_forces, points_aires = zip(*points)

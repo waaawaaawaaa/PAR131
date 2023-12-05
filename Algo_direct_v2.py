@@ -61,7 +61,7 @@ def loi_totale(rayons_courbure, hauteurs):
         Valeurs des forces.
 
     """
-    N = 100000 # Nombre de points
+    N = 10000 # Nombre de points
     aires_totales = [0 for i in range(N)]  # Liste des aires
     forces_totales = [0 for i in range(N)]  # Liste des forces
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
@@ -102,10 +102,9 @@ def get_aire_totale(rayons_courbure, hauteurs, force):
     for i in range(len(forces_totales)):
         if round(forces_totales[i]/10**9) == round(force/10**9):  # Si on a la bonne force
             aire = aires_totales[i]
-            print('rek' + str(round(forces_totales[i]/10**9)))
             return aire
         # Si on a pas la bonne valeur
-        return aires_totales[-1]
+    return aires_totales[-1]
 
 
 if __name__ == "__main__":
