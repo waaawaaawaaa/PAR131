@@ -79,14 +79,11 @@ def loi(aires, forces):
     plt.xlabel('Force (N)')
     plt.ylabel('A\u1D3F (m²)')
     # Définir la plage des valeurs sur l'axe des x (forces) et y (aires) pour le zoom
-    plt.xlim(forces[0], forces[7500])  # Vous pouvez ajuster les indices selon vos besoins
-    plt.ylim(aires[0], aires[7500])    # Vous pouvez ajuster les indices
+    #plt.xlim(forces[0], forces[7500])  # Vous pouvez ajuster les indices selon vos besoins
+    #plt.ylim(aires[0], aires[7500])    # Vous pouvez ajuster les indices
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
-    
-    
-    
-    
+
 
 def superposer_lois(*listes, points=None):
     """
@@ -99,7 +96,7 @@ def superposer_lois(*listes, points=None):
         Chaque tuple contient deux listes : la première avec les valeurs des
         aires, et la deuxième avec les valeurs des forces.
     points : list of tuples, optional
-        Liste de tuples contenant les coordonnées des points particuliers à 
+        Liste de tuples contenant les coordonnées des points particuliers à
         afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
 
     Returns
@@ -108,8 +105,13 @@ def superposer_lois(*listes, points=None):
 
     """
     couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs distinctives
-    for i, (aires, forces) in enumerate(listes):
-        plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
+    if len(listes) == 1:  # Vérification pour un seul tuple dans listes
+        aires, forces = listes[0][0]  # Déballage du seul tuple
+        plt.plot(forces, aires, label='Loi 1', color='b')  # Par exemple, utilisez une couleur spécifique
+
+    else:
+        for i, (aires, forces) in enumerate(listes):
+            plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
 
     if points:
         points_forces, points_aires = zip(*points)
@@ -144,6 +146,7 @@ def hauteur(hauteurs):
     plt.hist(liste_hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
+
 
 
 if __name__ == "__main__":

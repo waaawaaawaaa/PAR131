@@ -76,8 +76,8 @@ def loi_totale(rayons_courbure, hauteurs):
         aires_totales[i] = aire_totale
         forces_totales[i] = force
 
-        if delta == hauteur_moitie:
-            affichage.spheres(aires_contact)
+        #if delta == hauteur_moitie:
+            #affichage.spheres(aires_contact)
     return aires_totales, forces_totales
 
 
@@ -113,12 +113,11 @@ if __name__ == "__main__":
     # valeurs en um
     rayons_courbure = np.array([[526 for i in range(8)]
                                 for j in range(8)])
-    
     hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
                         for j in range(8)])
     hauteurs[1][1] = 150
     hauteurs[2][2] = 160
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
-    
+
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)
