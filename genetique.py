@@ -63,7 +63,7 @@ def score(individu, points):
         aire = Algo_direct_v2.get_aire_totale(individu.get_rayons_courbure(),
                                               individu.get_hauteurs(),
                                               point[0])
-        score = score + (point[1] - aire)
+        score = score + (point[1] - aire)**2
     return score
 
 
@@ -86,7 +86,7 @@ def selection(population, points):
     """
     population_triee = sorted(population,
                               key=lambda individu: score(individu, points))
-    population_selectionnee = population_triee[:len(population)/2]
+    population_selectionnee = population_triee[:round(len(population)/2)]
     return population_selectionnee
 
 
@@ -153,12 +153,11 @@ def mutation(population):
     """
     probabilite = 0.001  # Probabilite de mutation d'un gene
     for individu in population:
-        for i in len(individu.get_hauteurs()):
-            for j in len(individu.get_hauteurs()[i]):
+        for i in range(len(individu.get_hauteurs())):
+            for j in range(len(individu.get_hauteurs()[i])):
                 if random.random() < probabilite:  # S'il y a mutation
-                    hauteur = random.random() * 0.000120
-                    hauteur = round(hauteur, 6)
-                    individu.get_hauteur(i, j, hauteur)
+                    hauteur = random.randint(0, 120)  # En um
+                    individu.set_hauteur(i, j, hauteur)
 
 
 def genetique(points, limite=None):
@@ -177,10 +176,9 @@ def genetique(points, limite=None):
     None.
 
     """
-    N = 100  # Taille de la population
+    N = 10  # Taille de la population
     population = creer_population(N)
     for i in range(100):  # On fait 100 generations
-        print("a")
         population = nouvelle_generation(population, points)
         print('rgfidskodf')
         mutation(population)
@@ -195,4 +193,4 @@ def genetique(points, limite=None):
 
 
 if __name__ == "__main__":
-    genetique([(0.0215, 1.5*10**(-6)), (0.0853, 5.1*10**(-6))])
+    genetique([(0.0215*10**14, 1.5), (0.0243*10**14, 5.1)])

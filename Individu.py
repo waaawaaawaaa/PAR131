@@ -1,10 +1,6 @@
 """Classe individu qui represente une possibilite de surface."""
 import numpy as np
 import random
-from decimal import Decimal, getcontext
-
-# Définir la précision globale (par exemple, 10 décimales)
-getcontext().prec = 15
 
 
 class Individu:
@@ -51,7 +47,8 @@ class Individu:
             self.__hauteurs = self.__hauteurs_aleatoires()
         else:
             self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
-        self.__rayons_courbure = np.array([[0.000526 for i in range(8)]
+        # Rayons en um
+        self.__rayons_courbure = np.array([[526 for i in range(8)]
                                           for j in range(8)])
 
     def __hauteurs_aleatoires(self):
@@ -68,8 +65,8 @@ class Individu:
         for i in range(8):
             for j in range(8):
                 # On veut etre dans 0um et 120um avec une precision de 1um
-                # Decimal permet d'eviter l'arrondi a 0
-                hauteur = Decimal(random.randint(0, 120) / 10**6)
+                # Hauteurs en um
+                hauteur = random.randint(0, 120)
                 hauteurs[i][j] = hauteur
         return hauteurs
 

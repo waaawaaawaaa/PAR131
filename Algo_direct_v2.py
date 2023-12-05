@@ -3,19 +3,16 @@
 import numpy as np
 import affichage
 import random
-from decimal import Decimal, getcontext
-
-# Définir la précision globale (par exemple, 10 décimales)
-getcontext().prec = 15
+import time
 
 
-def loi_indentation(rayons_courbures, hauteurs, delta):
+def loi_indentation(rayons_courbure, hauteurs, delta):
     """
     Realise le calcul des aires de contact et de la force totale.
 
     Parameters
     ----------
-    rayons_courbures : np.array of floats
+    rayons_courbure : np.array of floats
         Matrice avec les rayons de courbures des spheres.
     hauteurs : np.array of floats
         Matrice avec les hauteurs des spheres.
@@ -32,19 +29,16 @@ def loi_indentation(rayons_courbures, hauteurs, delta):
     """
     E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
-    force_tot = Decimal(0)  # Donne la force totale
-    aires_contact = np.zeros((len(rayons_courbures), len(rayons_courbures[0])))
-    for i in range(len(rayons_courbures)):
-        for j in range(len(rayons_courbures[0])):
-            # On cherche l'identation i, vaut 0 si pas d'indentation
-            delta_i = max(delta + hauteurs[i][j] - hauteur_max, 0)
-            # Calcul de la force i selon la slide 27
-            force_i = Decimal((4/3 * E_etoile
-                               * np.sqrt(rayons_courbures[i][j] * np.pi)
-                               * delta_i ** (3/2)))
-            force_tot = force_tot + force_i
-            aire_i = Decimal(np.pi * rayons_courbures[i][j] * delta_i)
-            aires_contact[i][j] = aire_i
+    force_tot = 0  # Donne la force totale
+    aires_contact = np.zeros((len(rayons_courbure), len(rayons_courbure[0])))
+    # Calcul de la force i selon la slide 27, en 10**12
+    delta = np.maximum(delta + hauteurs - hauteur_max, 0)
+    forces = (4/3 * E_etoile
+              * np.sqrt(rayons_courbure * np.pi)
+              * delta
+              ** (3/2))
+    force_tot = np.sum(forces)
+    aires_contact = np.pi * rayons_courbure * delta
     return aires_contact, force_tot
 
 
@@ -61,15 +55,15 @@ def loi_totale(rayons_courbure, hauteurs):
 
     Returns
     -------
-    aires_totales : list of floats
+    aires_totales : list numpy of floats
         Valeurs des aires de contact totale en fonction de la force.
-    forces_totales : list of float
+    forces_totales : list numpy of float
         Valeurs des forces.
 
     """
     N = 10000  # Nombre de points
-    aires_totales = []  # Liste des aires
-    forces_totales = []  # Liste des forces
+    aires_totales = [0 for i in range(N)]  # Liste des aires
+    forces_totales = [0 for i in range(N)]  # Liste des forces
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
     hauteur_moitie = (3*hauteur_max) / 4
     for i in range(N):
@@ -77,10 +71,10 @@ def loi_totale(rayons_courbure, hauteurs):
         # On récupère les aires de chaque sphère et la force
         aires_contact, force = loi_indentation(rayons_courbure, hauteurs,
                                                delta)
-        print(force)
+        # print(force)
         aire_totale = np.sum(aires_contact)  # Aire de contacte totale
-        aires_totales.append(aire_totale)
-        forces_totales.append(force)
+        aires_totales[i] = aire_totale
+        forces_totales[i] = force
 
         if delta == hauteur_moitie:
             affichage.spheres(aires_contact)
@@ -88,7 +82,7 @@ def loi_totale(rayons_courbure, hauteurs):
 
 
 def get_aire_totale(rayons_courbure, hauteurs, force):
-    """Retrouve l'aire totale pour une force donnée
+    """Retrouve l'aire totale pour une force donnee.
 
     Parameters
     ----------
@@ -106,18 +100,26 @@ def get_aire_totale(rayons_courbure, hauteurs, force):
     """
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
     for i in range(len(forces_totales)):
-        if round(forces_totales[i], 4) == force:  # Si on a la bonne force
+        if round(forces_totales[i]/10**9) == round(force/10**9):  # Si on a la bonne force
             aire = aires_totales[i]
+            print('rek' + str(round(forces_totales[i]/10**9)))
             return aire
+        # Si on a pas la bonne valeur
+        return aires_totales[-1]
 
 
 if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
-    rayons_courbures = np.array([[0.000526 for i in range(5)]
-                                 for j in range(5)])
-    hauteurs = np.array([[random.randint(0, 120) / 10**6 for i in range(8)]
-                        for j in range(8)])
-
-    aires_totales, forces_totales = loi_totale(rayons_courbures, hauteurs)
+    # valeurs en um
+    rayons_courbure = np.array([[526 for i in range(8)]
+                                for j in range(8)])
+    somme = 0
+    for i in range(500):
+        hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
+                            for j in range(8)])
+        temps = time.time()  # On cherche la durée de loi_totale
+        aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
+        somme = somme + time.time() - temps
+    print(somme)
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)
