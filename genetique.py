@@ -176,21 +176,23 @@ def genetique(points, limite=None):
     None.
 
     """
-    N = 10  # Taille de la population
+    N = 50  # Taille de la population
     population = creer_population(N)
     for i in range(100):  # On fait 100 generations
+        print('fdjkl')
         population = nouvelle_generation(population, points)
         print('rgfidskodf')
         mutation(population)
         print("icicicici")
-        print(score(population[0], points))
-    individu_final = selection(population, points)[0]
-    print(score(individu_final, points))
-    aires, forces = Algo_direct_v2.loi_totale(individu_final.get_aire_totale(),
-                                              individu_final.get_hauteurs())
+        meilleur_individu = selection(population, points)[0]
+        print(score(meilleur_individu, points))
+        aires, forces = Algo_direct_v2.loi_totale(meilleur_individu.get_rayons_courbure(),
+                                                  meilleur_individu.get_hauteurs())
+        affichage.superposer_lois([(aires,forces)], points=points)
     affichage.loi(aires, forces)
-    affichage.hauteur(individu_final.get_hauteurs())
+    affichage.hauteur(meilleur_individu.get_hauteurs())
 
 
 if __name__ == "__main__":
+    print('djk')
     genetique([(0.0215*10**14, 1.5), (0.0243*10**14, 5.1)])
