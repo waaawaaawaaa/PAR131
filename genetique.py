@@ -158,10 +158,9 @@ def mutation(population):
     probabilite = 0.001  # Probabilite de mutation d'un gene
     for individu in population:
         for i in range(len(individu.get_hauteurs())):
-            for j in range(len(individu.get_hauteurs()[i])):
-                if random.random() < probabilite:  # S'il y a mutation
-                    hauteur = random.randint(0, 120)  # En um
-                    individu.set_hauteur(i, j, hauteur)
+            if random.random() < probabilite:  # S'il y a mutation
+                hauteur = random.randint(0, 120)  # En um
+                individu.set_hauteur(i, hauteur)
 
 
 def genetique(points, limite=None):

@@ -8,37 +8,39 @@ import numpy as np
 import random
 
 
-def spheres(matrice_aire):
+def spheres(aires):
     """
     Cree le graphique representant les spheres.
 
     Parameters
     ----------
-    matrice_aire : np.array of floats
-        Matrice des aires des spheres.
+    aires : np.array of floats
+        Liste des aires des spheres, cela doit etre un carre.
 
     Returns
     -------
     None.
 
     """
+    matrice_aires = [[aires[i+j] for i in range(np.sqrt(len(aires)))]
+                     for j in range(np.sqrt(len(aires)))]
     fig, ax = plt.subplots()  # Cree le graphique
 
     cmap = plt.get_cmap('viridis')  # Choix du jeu de couleurs
-    norm = mcolors.Normalize(vmin=np.min(matrice_aire),
-                             vmax=np.max(matrice_aire))
+    norm = mcolors.Normalize(vmin=np.min(matrice_aires),
+                             vmax=np.max(matrice_aires))
     sm = ScalarMappable(cmap=cmap, norm=norm)
     sm.set_array([])  # Permet l'utilisation d'une colorbar
 
-    matrice_rayon = np.sqrt(matrice_aire/np.pi)
+    matrice_rayons = np.sqrt(matrice_aires/np.pi)
 
-    espacement = 3 * np.max(matrice_rayon)  # Espace entre deux centres
+    espacement = 3 * np.max(matrice_rayons)  # Espace entre deux centres
 
-    for i in range(len(matrice_aire)):  # Creation des cercles
-        for j in range(len(matrice_aire[0])):
-            color = cmap(norm(matrice_aire[i][j]))  # Couleur du cercle i, j
+    for i in range(len(matrice_aires)):  # Creation des cercles
+        for j in range(len(matrice_aires[0])):
+            color = cmap(norm(matrice_aires[i][j]))  # Couleur du cercle i, j
             circle = Circle((i * espacement, j * espacement),
-                            radius=matrice_rayon[i][j],
+                            radius=matrice_rayons[i][j],
                             fill=True, color=color)  # Cree le cercle i, j
             ax.add_patch(circle)  # Ajout du cercle
 
@@ -47,9 +49,9 @@ def spheres(matrice_aire):
 
     # Limites des axes vallent les positions extremes decalees du rayon max
     ax.set_xlim(- espacement/2,
-                (len(matrice_rayon) - 1) * espacement + espacement / 2)
-    ax.set_ylim(- max(matrice_rayon[0]),
-                (len(matrice_rayon[0]) - 1) * espacement + espacement / 2)
+                (len(matrice_rayons) - 1) * espacement + espacement / 2)
+    ax.set_ylim(- max(matrice_rayons[0]),
+                (len(matrice_rayons[0]) - 1) * espacement + espacement / 2)
 
     # Affichez le graphique
     plt.axis('scaled')  # Permet un repere norme
@@ -92,8 +94,8 @@ def superposer_lois(listes, points=None):
     Parameters
     ----------
     *listes : tuples of list of floats
-        Chaque tuple contient deux listes : la première avec les valeurs des
-        aires, et la deuxième avec les valeurs des forces.
+        Chaque tuple contient deux listes : la premiere avec les valeurs des
+        aires, et la deuxieme avec les valeurs des forces.
     points : list of tuples, optional
         Liste de tuples contenant les coordonnées des points particuliers à
         afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
@@ -136,11 +138,10 @@ def hauteur(hauteurs):
     None.
 
     """
-    liste_hauteurs = [hauteur for i in hauteurs for hauteur in i]
     N = 60  # Nombre de barres plus 1
     hauteur_max = np.max(hauteurs)  # Hauteur maximale
     bins = [i*hauteur_max/N for i in range(N+1)]  # Bornes des barres
-    plt.hist(liste_hauteurs, bins)
+    plt.hist(hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
 

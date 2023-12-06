@@ -12,16 +12,16 @@ def loi_indentation(rayons_courbure, hauteurs, delta):
     Parameters
     ----------
     rayons_courbure : np.array of floats
-        Matrice avec les rayons de courbures des spheres.
+        Liste avec les rayons de courbures des spheres.
     hauteurs : np.array of floats
-        Matrice avec les hauteurs des spheres.
+        Liste avec les hauteurs des spheres.
     delta : float
         Indentation totale.
 
     Returns
     -------
     aires_contact : np.array of floats
-        Matrice avec les aires de contact de chaque sphere.
+        Liste avec les aires de contact de chaque sphere.
     force_tot : float
         Force totale exercee.
 
@@ -29,7 +29,6 @@ def loi_indentation(rayons_courbure, hauteurs, delta):
     E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
     force_tot = 0  # Donne la force totale
-    aires_contact = np.zeros((len(rayons_courbure), len(rayons_courbure[0])))
     # Calcul de la force i selon la slide 27, en 10**12
     delta = np.maximum(delta + hauteurs - hauteur_max, 0)
     forces = (4/3 * E_etoile
@@ -48,9 +47,9 @@ def loi_totale(rayons_courbure, hauteurs):
     Parameters
     ----------
     rayons_courbure : np.array of floats
-        Matrice avec les rayons de courbure des spheres.
+        Liste avec les rayons de courbure des spheres.
     hauteurs : np.array of floats
-        Matrice avec les hauteurs des spheres.
+        Liste avec les hauteurs des spheres.
 
     Returns
     -------
@@ -85,9 +84,9 @@ def get_force_aire(rayons_courbure, hauteurs, point):
     Parameters
     ----------
     rayons_courbure : np.array of floats
-        Matrice avec les rayons de courbure des spheres.
+        Liste avec les rayons de courbure des spheres.
     hauteurs : np.array of floats
-        Matrice avec les hauteurs des spheres.
+        Liste avec les hauteurs des spheres.
     point : couple of float
         Point que l'on souhaite atteindre (force, aire)
 
@@ -107,13 +106,10 @@ def get_force_aire(rayons_courbure, hauteurs, point):
 if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
     # valeurs en um
-    rayons_courbure = np.array([[526 for i in range(8)]
-                                for j in range(8)])
-    hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
-                        for j in range(8)])
-    hauteurs[1][1] = 150
-    hauteurs[2][2] = 160
+    rayons_courbure = np.array([526 for i in range(64)])
+    hauteurs = np.array([random.randint(0, 120) for i in range(64)])
+    hauteurs[1] = 150
+    hauteurs[2] = 160
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
-
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)

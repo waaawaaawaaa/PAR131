@@ -24,6 +24,8 @@ class Individu:
         Définit la hauteur d'une asperite.
     get_hauteurs() -> np.array of floats
         Obtient les hauteurs des asperites.
+    get_rayons_courbure -> np.array of floats
+        Obtient les rayons de courbure des asperites.
 
     """
 
@@ -48,8 +50,7 @@ class Individu:
         else:
             self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
         # Rayons en um
-        self.__rayons_courbure = np.array([[526 for i in range(8)]
-                                          for j in range(8)])
+        self.__rayons_courbure = np.array([526 for i in range(64)])
 
     def __hauteurs_aleatoires(self):
         """
@@ -61,13 +62,9 @@ class Individu:
             Ensemble des hauteurs de l'Individu enfant.
 
         """
-        hauteurs = np.array([[0 for i in range(8)] for j in range(8)])
-        for i in range(8):
-            for j in range(8):
-                # On veut etre dans 0um et 120um avec une precision de 1um
-                # Hauteurs en um
-                hauteur = random.randint(0, 120)
-                hauteurs[i][j] = hauteur
+        # On veut etre dans 0um et 120um avec une precision de 1um
+        # Hauteurs en um
+        hauteurs = np.array([random.randint(0, 120) for i in range(64)])
         return hauteurs
 
     def __hauteurs_fusion(self, individu1, individu2):
@@ -88,25 +85,22 @@ class Individu:
 
         """
         coupure = random.randint(1, 63)  # Valeur de changement du gene pris
-        hauteurs = np.array([[0 for i in range(8)] for j in range(8)])
-        for i in range(8):
-            for j in range(8):
-                if 8*i + j < coupure:  # Si on est avant la coupure
-                    hauteurs[i][j] = individu1.get_hauteur(i, j)
-                else:
-                    hauteurs[i][j] = individu2.get_hauteur(i, j)
+        hauteurs = np.array([0 for i in range(64)])
+        for i in range(64):
+            if i < coupure:  # Si on est avant la coupure
+                hauteurs[i] = individu1.get_hauteur(i)
+            else:
+                hauteurs[i] = individu2.get_hauteur(i)
         return hauteurs
 
-    def get_hauteur(self, i, j):
+    def get_hauteur(self, i):
         """
         Obtient la hauteur d'une asperite.
 
         Parameters
         ----------
         i : int
-            Premiere coordonnee de l'asperite.
-        j : int
-            Seconde coordonnee de l'asperite.
+            Coordonnee de l'asperite.
 
         Returns
         -------
@@ -114,18 +108,16 @@ class Individu:
             Valeur de la hauteur de l'asperite.
 
         """
-        return self.__hauteurs[i][j]
+        return self.__hauteurs[i]
 
-    def set_hauteur(self, i, j, valeur):
+    def set_hauteur(self, i, valeur):
         """
         Définit la hauteur d'une asperite.
 
         Parameters
         ----------
         i : int
-            Premiere coordonnee de l'asperite.
-        j : int
-            Seconde coordonnee de l'asperite.
+            Coordonnee de l'asperite.
         valeur : float
             Valeur de la hauteur de l'asperite.
 
@@ -134,7 +126,7 @@ class Individu:
         None.
 
         """
-        self.__hauteurs[i][j] = valeur
+        self.__hauteurs[i] = valeur
 
     def get_hauteurs(self):
         """
