@@ -1,6 +1,6 @@
 """Module utilisant un algorithme génétique."""
 
-import Algo_direct_v2
+import algo_direct
 from Individu import Individu
 import random
 import affichage
@@ -62,9 +62,10 @@ def score(individu, points):
     aire_0 = points[-1][1]  # Aire pour normalisee
     force_0 = points[-1][0]  # Force pour normalisee
     for point in points:
-        force, aire = Algo_direct_v2.get_force_aire(individu.get_rayons_courbure(),
-                                                    individu.get_hauteurs(),
-                                                    point)
+        force, aire = algo_direct.get_force_aire(
+                                                individu.get_rayons_courbure(),
+                                                individu.get_hauteurs(),
+                                                point)
         score = (score + ((point[1] - aire)/aire_0)**2
                  + ((point[0] - force)/force_0)**2)
     return score
@@ -187,9 +188,10 @@ def genetique(points, limite=None):
         mutation(population)
         meilleur_individu = selection(population, points)[0]
         print(score(meilleur_individu, points))
-        aires, forces = Algo_direct_v2.loi_totale(meilleur_individu.get_rayons_courbure(),
-                                                  meilleur_individu.get_hauteurs())
-        liste_courbes.append((aires,forces))
+        aires, forces = algo_direct.loi_totale(
+                        meilleur_individu.get_rayons_courbure(),
+                        meilleur_individu.get_hauteurs())
+        liste_courbes.append((aires, forces))
         affichage.superposer_lois(liste_courbes, points=points)
     affichage.loi(aires, forces)
     affichage.hauteur(meilleur_individu.get_hauteurs())

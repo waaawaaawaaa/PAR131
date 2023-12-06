@@ -3,7 +3,6 @@
 import numpy as np
 import affichage
 import random
-import time
 
 
 def loi_indentation(rayons_courbure, hauteurs, delta):
@@ -61,11 +60,10 @@ def loi_totale(rayons_courbure, hauteurs):
         Valeurs des forces.
 
     """
-    N = 10000 # Nombre de points
+    N = 10000  # Nombre de points
     aires_totales = [0 for i in range(N)]  # Liste des aires
     forces_totales = [0 for i in range(N)]  # Liste des forces
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
-    hauteur_moitie = (3*hauteur_max) / 4
     for i in range(N):
         delta = i * hauteur_max / N  # Valeur de l'indentation
         # On récupère les aires de chaque sphère et la force
@@ -75,9 +73,6 @@ def loi_totale(rayons_courbure, hauteurs):
         aire_totale = np.sum(aires_contact)  # Aire de contacte totale
         aires_totales[i] = aire_totale
         forces_totales[i] = force
-
-        #if delta == hauteur_moitie:
-            #affichage.spheres(aires_contact)
     return aires_totales, forces_totales
 
 

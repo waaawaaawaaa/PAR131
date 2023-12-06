@@ -78,17 +78,16 @@ def loi(aires, forces):
     plt.plot(forces, aires)
     plt.xlabel('Force (N)')
     plt.ylabel('A\u1D3F (m²)')
-    # Définir la plage des valeurs sur l'axe des x (forces) et y (aires) pour le zoom
-    #plt.xlim(forces[0], forces[7500])  # Vous pouvez ajuster les indices selon vos besoins
-    #plt.ylim(aires[0], aires[7500])    # Vous pouvez ajuster les indices
+    # Définir la plage des valeurs des forces et des aires pour le zoom
+    # plt.xlim(forces[0], forces[7500])
+    # plt.ylim(aires[0], aires[7500])
     plt.savefig("loi.png")  # Permet de sauvegarder le fichier
     plt.show()
 
 
 def superposer_lois(listes, points=None):
     """
-    Superpose différentes lois aire-force sur un même graphique, avec des
-    points particuliers.
+    Superpose différentes lois et points.
 
     Parameters
     ----------
@@ -104,14 +103,16 @@ def superposer_lois(listes, points=None):
     None.
 
     """
-    couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs distinctives
+    couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs
     for i in range(len(listes)):
         aires, forces = listes[i]
-        plt.plot(forces, aires, label=f'Loi {i + 1}', color=couleurs[i % len(couleurs)])
+        plt.plot(forces, aires, label=f'Loi {i + 1}',
+                 color=couleurs[i % len(couleurs)])
 
     if points:
         points_forces, points_aires = zip(*points)
-        plt.scatter(points_forces, points_aires, color='red', marker='x', label='Points recherchés')
+        plt.scatter(points_forces, points_aires, color='red',
+                    marker='x', label='Points recherchés')
 
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
@@ -142,7 +143,6 @@ def hauteur(hauteurs):
     plt.hist(liste_hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
-
 
 
 if __name__ == "__main__":
