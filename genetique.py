@@ -191,7 +191,7 @@ def genetique(points, limite=None):
                         meilleur_individu.get_rayons_courbure(),
                         meilleur_individu.get_hauteurs())
         liste_courbes.append((aires, forces))
-        affichage.superposer_lois(liste_courbes, points=points)
+        affichage.superposer_lois_degrade(liste_courbes, points=points)
     affichage.loi(aires, forces)
     affichage.hauteur(meilleur_individu.get_hauteurs())
 

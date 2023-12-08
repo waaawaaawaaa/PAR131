@@ -122,6 +122,45 @@ def superposer_lois(listes, points=None):
     plt.legend()
     plt.savefig("superposition_lois.png")
     plt.show()
+    
+
+def superposer_lois_degrade(listes, points=None):
+    """
+    Superpose différentes lois et points.
+
+    Parameters
+    ----------
+    *listes : tuples of list of floats
+        Chaque tuple contient deux listes : la premiere avec les valeurs des
+        aires, et la deuxieme avec les valeurs des forces.
+    points : list of tuples, optional
+        Liste de tuples contenant les coordonnées des points particuliers à
+        afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
+
+    Returns
+    -------
+    None.
+
+    """
+    # Créer une échelle de couleurs allant du bleu clair au bleu foncé
+    couleurs = plt.cm.Blues(np.linspace(0.2, 1, len(listes)))
+
+    for i in range(len(listes)):
+        aires, forces = listes[i]
+        plt.plot(forces, aires, label=f'Loi {i + 1}',
+                 color=couleurs[i])
+
+    if points:
+        points_forces, points_aires = zip(*points)
+        plt.scatter(points_forces, points_aires, color='red',
+                    marker='x', label='Points recherchés')
+
+    plt.xlabel('Force (N)')
+    plt.ylabel('Aire (m²)')
+    plt.title('Superposition de lois aire-force')
+    plt.legend()
+    plt.savefig("superposition_lois.png")
+    plt.show()
 
 
 def hauteur(hauteurs):
