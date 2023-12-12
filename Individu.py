@@ -2,6 +2,8 @@
 import numpy as np
 import random
 
+nombre_asperites = 64
+
 
 class Individu:
     """
@@ -50,7 +52,8 @@ class Individu:
         else:
             self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
         # Rayons en um
-        self.__rayons_courbure = np.array([526 for i in range(64)])
+        self.__rayons_courbure = np.array([526 for i
+                                           in range(nombre_asperites)])
 
     def __hauteurs_aleatoires(self):
         """
@@ -64,7 +67,8 @@ class Individu:
         """
         # On veut etre dans 0um et 120um avec une precision de 1um
         # Hauteurs en um
-        hauteurs = np.array([random.randint(0, 120) for i in range(64)])
+        hauteurs = np.array([random.randint(0, 120) for i
+                             in range(nombre_asperites)])
         return hauteurs
 
     def __hauteurs_fusion(self, individu1, individu2):
@@ -84,9 +88,10 @@ class Individu:
             Ensemble des hauteurs de l'Individu enfant.
 
         """
-        coupure = random.randint(1, 63)  # Valeur de changement du gene pris
-        hauteurs = np.array([0 for i in range(64)])
-        for i in range(64):
+        # Valeur de changement du gene pris
+        coupure = random.randint(1, nombre_asperites-1)
+        hauteurs = np.array([0 for i in range(nombre_asperites)])
+        for i in range(nombre_asperites):
             if i < coupure:  # Si on est avant la coupure
                 hauteurs[i] = individu1.get_hauteur(i)
             else:
