@@ -16,6 +16,7 @@ def creer_individu():
         Individu creer aleatoirement.
 
     """
+
     individu = Individu()
     return individu
 
@@ -179,9 +180,23 @@ def genetique(points, limite=None):
     None.
 
     """
+    liste_courbes = []
+
     N = 50  # Taille de la population
     population = creer_population(N)
-    liste_courbes = []
+    
+    # for individu in population:
+        
+    #     aires, forces = algo_direct.loi_totale(
+    #                     individu.get_rayons_courbure(),
+    #                     individu.get_hauteurs())
+    #     liste_courbes.append((aires, forces))
+    #     affichage.superposer_lois_degrade(liste_courbes, points=points)
+    # affichage.loi(aires, forces)
+    # affichage.hauteur(individu.get_hauteurs())
+        
+    #return
+
     for i in range(100):  # On fait 100 generations
         population = nouvelle_generation(population, points)
         mutation(population)
@@ -197,4 +212,4 @@ def genetique(points, limite=None):
 
 
 if __name__ == "__main__":
-    genetique([(861926869219, 619507)])
+    genetique([(558208229327, 1956593)])
