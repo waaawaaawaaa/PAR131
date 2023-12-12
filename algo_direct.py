@@ -59,18 +59,22 @@ def loi_totale(rayons_courbure, hauteurs):
 
     """
     N = 10000  # Nombre de points
-    aires_totales = [0 for i in range(N)]  # Liste des aires
-    forces_totales = [0 for i in range(N)]  # Liste des forces
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
-    for i in range(N):
-        delta = i * hauteur_max / N  # Valeur de l'indentation
-        # On récupère les aires de chaque sphère et la force
-        aires_contact, force = loi_indentation(rayons_courbure, hauteurs,
-                                               delta)
-        # print(force)
-        aire_totale = np.sum(aires_contact)  # Aire de contacte totale
-        aires_totales[i] = aire_totale
-        forces_totales[i] = force
+    E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
+    deltas = np.maximum(np.ones((len(hauteurs), 1))
+                        * np.arange(0, N)
+                        + hauteurs.reshape(len(hauteurs), 1) * np.ones((1, N))
+                        - hauteur_max,
+                        0)
+    aires_contact = (np.pi
+                     * np.multiply(rayons_courbure.reshape(len(hauteurs), 1),
+                                   deltas))
+    forces = (4/3 * E_etoile * np.sqrt(np.pi)
+              * np.multiply(
+              np.sqrt(rayons_courbure.reshape(len(hauteurs), 1)),
+              deltas**(3/2)))
+    aires_totales = np.sum(aires_contact, 0)  # Aire de contacte totale
+    forces_totales = np.sum(forces, 0)
     return aires_totales, forces_totales
 
 
