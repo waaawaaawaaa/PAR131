@@ -28,15 +28,14 @@ def loi_indentation(rayons_courbure, hauteurs, delta):
     """
     E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
-    force_tot = 0  # Donne la force totale
     # Calcul de la force i selon la slide 27, en 10**12
-    delta = np.maximum(delta + hauteurs - hauteur_max, 0)
+    deltas = np.maximum(delta + hauteurs - hauteur_max, 0)
     forces = (4/3 * E_etoile
               * np.sqrt(rayons_courbure * np.pi)
-              * delta
+              * deltas
               ** (3/2))
     force_tot = np.sum(forces)
-    aires_contact = np.pi * rayons_courbure * delta
+    aires_contact = np.pi * rayons_courbure * deltas
     return aires_contact, force_tot
 
 
@@ -108,8 +107,6 @@ if __name__ == "__main__":
     # valeurs en um
     rayons_courbure = np.array([526 for i in range(64)])
     hauteurs = np.array([random.randint(0, 120) for i in range(64)])
-    hauteurs[1] = 150
-    hauteurs[2] = 160
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)
