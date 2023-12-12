@@ -133,7 +133,7 @@ def nouvelle_generation(population, points):
     """
     nouvelle_population = selection(population, points)
     N = len(nouvelle_population)
-    for i in range(0, N, 2):
+    for i in range(0, N-1, 2):
         nouvelle_population.append(mutation(Individu(nouvelle_population[i],
                                             nouvelle_population[i+1])))
         nouvelle_population.append(mutation(Individu(nouvelle_population[i+1],
@@ -152,7 +152,8 @@ def mutation(individu):
 
     Returns
     -------
-    None
+    individu : Individu
+        Individu apres la mutation.
 
     """
     probabilite = 0.1  # Probabilite de mutation d'un gene
@@ -160,6 +161,7 @@ def mutation(individu):
         if random.random() < probabilite:  # S'il y a mutation
             hauteur = random.randint(0, 120)  # En um
             individu.set_hauteur(i, hauteur)
+    return individu
 
 
 def genetique(points, limite=None):
@@ -182,7 +184,6 @@ def genetique(points, limite=None):
 
     N = 50  # Taille de la population
     population = creer_population(N)
-
     # for individu in population:
 
     #     aires, forces = algo_direct.loi_totale(
