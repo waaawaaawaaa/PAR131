@@ -66,7 +66,6 @@ def loi_totale(rayons_courbure, hauteurs):
                         + hauteurs.reshape(len(hauteurs), 1) * np.ones((1, N))
                         - hauteur_max,
                         0)
-    print(deltas)
     aires_contact = (np.pi
                      * np.multiply(rayons_courbure.reshape(len(hauteurs), 1),
                                    deltas))
@@ -104,14 +103,14 @@ def get_force_aire(rayons_courbure, hauteurs, point):
     aires, forces = loi_totale(rayons_courbure, hauteurs)
     i = min(range(len(forces)), key=lambda i: abs(forces[i] - point[0]))
     j = min(range(len(aires)), key=lambda j: abs(aires[j] - point[1]))
-    return aires[i], forces[j]
+    return forces[j], aires[i]
 
 
 if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
     # valeurs en um
     rayons_courbure = np.array([526 for i in range(64)])
-    hauteurs = np.array([random.randint(0, 120) for i in range(64)])
+    hauteurs = np.array([np.clip(np.random.exponential(40), 0, 120) for i in range(64)])
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
     affichage.loi(aires_totales, forces_totales)
     affichage.hauteur(hauteurs)

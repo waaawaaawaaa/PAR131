@@ -181,6 +181,7 @@ def genetique(points, limite=None):
 
     """
     liste_courbes = []
+    liste_score = []
 
     N = 50  # Taille de la population
     population = creer_population(N)
@@ -190,24 +191,30 @@ def genetique(points, limite=None):
     #                     individu.get_rayons_courbure(),
     #                     individu.get_hauteurs())
     #     liste_courbes.append((aires, forces))
-    #     affichage.superposer_lois_degrade(liste_courbes, points=points)
+    #     affichage.superposer_lois(liste_courbes, points=points)
     # affichage.loi(aires, forces)
     # affichage.hauteur(individu.get_hauteurs())
 
-    #return
+    # return
 
     for i in range(100):  # On fait 100 generations
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population, points)[0]
         print(score(meilleur_individu, points))
+        liste_score.append(score(meilleur_individu, points))
         aires, forces = algo_direct.loi_totale(
                         meilleur_individu.get_rayons_courbure(),
                         meilleur_individu.get_hauteurs())
         liste_courbes.append((aires, forces))
         affichage.superposer_lois_degrade(liste_courbes, points=points)
+        affichage.score(liste_score)
+        
+        
+
     affichage.loi(aires, forces)
     affichage.hauteur(meilleur_individu.get_hauteurs())
 
 
+
 if __name__ == "__main__":
-    genetique([(558208229327, 1956593)])
+    genetique([(558208229327, 1956593), (558208229327*2, 1956593*2)])

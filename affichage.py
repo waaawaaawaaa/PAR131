@@ -119,7 +119,6 @@ def superposer_lois(listes, points=None):
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
     plt.title('Superposition de lois aire-force')
-    plt.legend()
     plt.savefig("superposition_lois.png")
     plt.show()
     
@@ -182,6 +181,16 @@ def hauteur(hauteurs):
     plt.hist(hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
+    
+def score(score): 
+    
+    plt.plot([i for i in range (len(score))], score)
+    plt.xlabel('Génération')
+    plt.ylabel('Score')
+    plt.show()
+    
+    
+    
 
 
 if __name__ == "__main__":
