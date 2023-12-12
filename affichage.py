@@ -158,7 +158,6 @@ def superposer_lois_degrade(listes, points=None):
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
     plt.title('Superposition de lois aire-force')
-    plt.legend()
     plt.savefig("superposition_lois.png")
     plt.show()
 

@@ -116,8 +116,7 @@ if __name__ == "__main__":
                                 for j in range(8)])
     hauteurs = np.array([[random.randint(0, 120) for i in range(8)]
                         for j in range(8)])
-    hauteurs[1][1] = 150
-    hauteurs[2][2] = 160
+
     aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
 
     affichage.loi(aires_totales, forces_totales)

@@ -155,7 +155,7 @@ def mutation(population):
     None
 
     """
-    probabilite = 0.001  # Probabilite de mutation d'un gene
+    probabilite = 0.1  # Probabilite de mutation d'un gene
     for individu in population:
         for i in range(len(individu.get_hauteurs())):
             if random.random() < probabilite:  # S'il y a mutation
