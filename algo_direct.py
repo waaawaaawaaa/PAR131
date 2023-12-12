@@ -61,11 +61,12 @@ def loi_totale(rayons_courbure, hauteurs):
     N = 10000  # Nombre de points
     hauteur_max = np.max(hauteurs)  # Donne la hauteur la plus elevee
     E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
-    deltas = np.maximum(np.ones((len(hauteurs), 1))
+    deltas = np.maximum(hauteur_max / N * np.ones((len(hauteurs), 1))
                         * np.arange(0, N)
                         + hauteurs.reshape(len(hauteurs), 1) * np.ones((1, N))
                         - hauteur_max,
                         0)
+    print(deltas)
     aires_contact = (np.pi
                      * np.multiply(rayons_courbure.reshape(len(hauteurs), 1),
                                    deltas))
