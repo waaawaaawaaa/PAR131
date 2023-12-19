@@ -15,7 +15,7 @@ class Individu:
     ----------
     hauteurs : np.array of floats
         Hauteurs de chaque asperite.
-    rayons_courbure : np.array of floats
+    rayons : np.array of floats
         Rayons de courbure de chaque asperite.
 
     Methods
@@ -49,11 +49,10 @@ class Individu:
         """
         if individu1 is None:
             self.__hauteurs = self.__hauteurs_aleatoires()
+            self.__rayons = self.__rayons_aleatoires()
         else:
             self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
-        # Rayons en um
-        self.__rayons_courbure = np.array([526 for i
-                                           in range(nombre_asperites)])
+            self.__rayons = self.__rayons_fusion(individu1, individu2)
 
     def __hauteurs_aleatoires(self):
         """
@@ -88,11 +87,12 @@ class Individu:
             Ensemble des hauteurs de l'Individu enfant.
 
         """
-        # Valeur de changement du gene pris
-        coupure = random.randint(1, nombre_asperites-1)
+        # Probabilite de prendre les genes du pere.
+        seuil = random.random()
         hauteurs = np.array([0 for i in range(nombre_asperites)])
         for i in range(nombre_asperites):
-            if i < coupure:  # Si on est avant la coupure
+            test = random.random()
+            if test < seuil:  # Si on est avant la coupure
                 hauteurs[i] = individu1.get_hauteur(i)
             else:
                 hauteurs[i] = individu2.get_hauteur(i)
@@ -155,7 +155,86 @@ class Individu:
             Valeur des rayons de courbure des asperites.
 
         """
-        return self.__rayons_courbure
+        return self.__rayons
+
+    def __rayons_aleatoires(self):
+        """
+        Cree aleatoirement les rayons de l'Individu.
+
+        Returns
+        -------
+        rayons : np.array of floats
+            Ensemble des rayons de l'Individu enfant.
+
+        """
+        # On veut etre dans 100um et 530um avec une precision de 10um
+        # rayons en um
+        rayons = np.array([10 * random.randint(10, 53) for i
+                           in range(nombre_asperites)])
+        return rayons
+
+    def __rayons_fusion(self, individu1, individu2):
+        """
+        Fusionne les rayons des Individus parents pour avoir celles enfants.
+
+        Parameters
+        ----------
+        Individu1 : Individu
+            Individu père.
+        Individu2 : Individu
+            Individu mère.
+
+        Returns
+        -------
+        rayons : np.array of floats
+            Ensemble des rayons de l'Individu enfant.
+
+        """
+        # Probabilite de prendre les genes du pere.
+        seuil = random.random()
+        rayons = np.array([0 for i in range(nombre_asperites)])
+        for i in range(nombre_asperites):
+            test = random.random()
+            if test < seuil:  # Si on est avant la coupure
+                rayons[i] = individu1.get_rayon(i)
+            else:
+                rayons[i] = individu2.get_rayon(i)
+        return rayons
+
+    def get_rayon(self, i):
+        """
+        Obtient le rayon d'une asperite.
+
+        Parameters
+        ----------
+        i : int
+            Coordonnee de l'asperite.
+
+        Returns
+        -------
+        float
+            Valeur de la rayon de l'asperite.
+
+        """
+        return self.__rayons[i]
+
+    def set_rayon(self, i, valeur):
+        """
+        Définit le rayon d'une asperite.
+
+        Parameters
+        ----------
+        i : int
+            Coordonnee de l'asperite.
+        valeur : float
+            Valeur de la rayon de l'asperite.
+
+        Returns
+        -------
+        None.
+
+        """
+        self.__rayons[i] = valeur
 
 
 if __name__ == "__main__":

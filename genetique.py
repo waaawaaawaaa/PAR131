@@ -162,11 +162,14 @@ def mutation(individu):
         Individu apres la mutation.
 
     """
-    probabilite = 0.01  # Probabilite de mutation d'un gene
+    probabilite = 0.1  # Probabilite de mutation d'un gene
     for i in range(len(individu.get_hauteurs())):
-        if random.random() < probabilite:  # S'il y a mutation
+        if random.random() < probabilite:  # S'il y a mutation sur la hauteur
             hauteur = random.randint(0, 120)  # En um
             individu.set_hauteur(i, hauteur)
+        if random.random() < probabilite:  # S'il y a mutation sur le rayon
+            rayon = 10 * random.randint(10, 53)  # En um
+            individu.set_rayon(i, rayon)
     return individu
 
 
