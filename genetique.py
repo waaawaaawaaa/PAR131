@@ -41,7 +41,7 @@ def creer_population(N):
     return population
 
 
-def score(individu, points):
+def score(individu, points, poids=True):
     """
     Definit le score de l'individu.
 
@@ -63,11 +63,18 @@ def score(individu, points):
     force_0 = points[-1][0]  # Force pour normalisee
     forces, aires = algo_direct.loi_totale(individu.get_rayons_courbure(),
                                            individu.get_hauteurs())
-    for point in points:
+    for i in range(len(points)):
+        point = points[i]
         force, aire = algo_direct.get_force_aire(forces, aires, point)
-        score = (score + ((point[1] - aire)/aire_0)**2
-                 + ((point[0] - force)/force_0)**2)
-    return score
+        if i == 0 and poids:
+            score = (1 * (((point[1] - aire)/aire_0)**2
+                     + ((point[0] - force)/force_0)**2))
+        else:
+            score = (score + ((point[1] - aire)/aire_0)**2
+                     + ((point[0] - force)/force_0)**2)
+    if poids:
+        return score/2
+    return score/len(points)
 
 
 def selection(population, points):
@@ -155,7 +162,7 @@ def mutation(individu):
         Individu apres la mutation.
 
     """
-    probabilite = 0.1  # Probabilite de mutation d'un gene
+    probabilite = 0.01  # Probabilite de mutation d'un gene
     for i in range(len(individu.get_hauteurs())):
         if random.random() < probabilite:  # S'il y a mutation
             hauteur = random.randint(0, 120)  # En um
@@ -199,14 +206,17 @@ def genetique(points, limite=None):
     for i in range(100):  # On fait 100 generations
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population, points)[0]
+        print("Génération : ", i)
         print(score(meilleur_individu, points))
         liste_score.append(score(meilleur_individu, points))
         forces, aires = algo_direct.loi_totale(
                         meilleur_individu.get_rayons_courbure(),
                         meilleur_individu.get_hauteurs())
         liste_courbes.append((forces, aires))
-        affichage.superposer_lois_degrade([(forces, aires)], points=points)
+        affichage.superposer_loi_points(forces, aires, points, i,
+                                        liste_score[i])
         # affichage.score(liste_score)
+    print(score(meilleur_individu, points, False))
     affichage.score(liste_score)
     affichage.loi(forces, aires)
     affichage.hauteur(meilleur_individu.get_hauteurs())
