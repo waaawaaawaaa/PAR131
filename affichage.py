@@ -61,16 +61,16 @@ def spheres(aires):
     plt.show()  # Affiche le graphique
 
 
-def loi(aires, forces):
+def loi(forces, aires):
     """
     Cree le graphique affichant l'aire de contact en fonction de la force.
 
     Parameters
     ----------
-    aires : list of floats
-        Liste avec les valeurs des aires totales.
     forces : list of floats
         Liste avec les valeurs des forces.
+    aires : list of floats
+        Liste avec les valeurs des aires totales.
 
     Returns
     -------
@@ -95,7 +95,7 @@ def superposer_lois(listes, points=None):
     ----------
     *listes : tuples of list of floats
         Chaque tuple contient deux listes : la premiere avec les valeurs des
-        aires, et la deuxieme avec les valeurs des forces.
+        forces, et la deuxieme avec les valeurs des aires.
     points : list of tuples, optional
         Liste de tuples contenant les coordonnées des points particuliers à
         afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
@@ -107,7 +107,7 @@ def superposer_lois(listes, points=None):
     """
     couleurs = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Liste de couleurs
     for i in range(len(listes)):
-        aires, forces = listes[i]
+        forces, aires = listes[i]
         plt.plot(forces, aires, label=f'Loi {i + 1}',
                  color=couleurs[i % len(couleurs)])
 
@@ -118,10 +118,10 @@ def superposer_lois(listes, points=None):
 
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
-    plt.title('Superposition de lois aire-force')
+    plt.title('Superposition de lois force-aire')
     plt.savefig("superposition_lois.png")
     plt.show()
-    
+
 
 def superposer_lois_degrade(listes, points=None):
     """
@@ -131,7 +131,7 @@ def superposer_lois_degrade(listes, points=None):
     ----------
     *listes : tuples of list of floats
         Chaque tuple contient deux listes : la premiere avec les valeurs des
-        aires, et la deuxieme avec les valeurs des forces.
+        forces, et la deuxieme avec les valeurs des aires.
     points : list of tuples, optional
         Liste de tuples contenant les coordonnées des points particuliers à
         afficher. Chaque tuple doit avoir deux valeurs : (force, aire).
@@ -145,7 +145,7 @@ def superposer_lois_degrade(listes, points=None):
     couleurs = plt.cm.Blues(np.linspace(0.2, 1, len(listes)))
 
     for i in range(len(listes)):
-        aires, forces = listes[i]
+        forces, aires = listes[i]
         plt.plot(forces, aires, label=f'Loi {i + 1}',
                  color=couleurs[i])
 
@@ -156,7 +156,7 @@ def superposer_lois_degrade(listes, points=None):
 
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
-    plt.title('Superposition de lois aire-force')
+    plt.title('Superposition de lois force-aire')
     plt.savefig("superposition_lois.png")
     plt.show()
 
@@ -181,16 +181,26 @@ def hauteur(hauteurs):
     plt.hist(hauteurs, bins)
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
-    
-def score(score): 
-    
-    plt.plot([i for i in range (len(score))], score)
+
+
+def score(scores):
+    """
+    Trace l'evolution du score en fonction de la generation.
+
+    Parameters
+    ----------
+    scores : list of floats
+        Liste des scores.
+
+    Returns
+    -------
+    None.
+
+    """
+    plt.plot([i for i in range(len(score))], score)
     plt.xlabel('Génération')
     plt.ylabel('Score')
     plt.show()
-    
-    
-    
 
 
 if __name__ == "__main__":

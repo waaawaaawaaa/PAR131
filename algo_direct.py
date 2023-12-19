@@ -20,10 +20,10 @@ def loi_indentation(rayons_courbure, hauteurs, delta):
 
     Returns
     -------
-    aires_contact : np.array of floats
-        Liste avec les aires de contact de chaque sphere.
     force_tot : float
         Force totale exercee.
+    aires_contact : np.array of floats
+        Liste avec les aires de contact de chaque sphere.
 
     """
     E_etoile = 1.36 * 10 ** 6  # Valeur de la slide 24 du diapo de A. Aymard
@@ -36,7 +36,7 @@ def loi_indentation(rayons_courbure, hauteurs, delta):
               ** (3/2))
     force_tot = np.sum(forces)
     aires_contact = np.pi * rayons_courbure * deltas
-    return aires_contact, force_tot
+    return force_tot, aires_contact
 
 
 def loi_totale(rayons_courbure, hauteurs):
@@ -52,10 +52,10 @@ def loi_totale(rayons_courbure, hauteurs):
 
     Returns
     -------
-    aires_totales : list numpy of floats
-        Valeurs des aires de contact totale en fonction de la force.
     forces_totales : list numpy of float
         Valeurs des forces.
+    aires_totales : list numpy of floats
+        Valeurs des aires de contact totale en fonction de la force.
 
     """
     N = 10000  # Nombre de points
@@ -75,10 +75,10 @@ def loi_totale(rayons_courbure, hauteurs):
               deltas**(3/2)))
     aires_totales = np.sum(aires_contact, 0)  # Aire de contacte totale
     forces_totales = np.sum(forces, 0)
-    return aires_totales, forces_totales
+    return forces_totales, aires_totales
 
 
-def get_force_aire(aires, forces, point):
+def get_force_aire(forces, aires, point):
     """Retrouve les points necessaires aux scores.
 
     A partir d'un point, retrouve la force correspondant a l'aire de ce
@@ -86,10 +86,10 @@ def get_force_aire(aires, forces, point):
 
     Parameters
     ----------
-    aires : np.array of floats
-        Liste des aires totales provenant de la loi de frottement.
     forces : np.array of floats
         Liste des forces totales provenant de la loi de frottement.
+    aires : np.array of floats
+        Liste des aires totales provenant de la loi de frottement.
     point : couple of float
         Point que l'on souhaite atteindre (force, aire).
 
@@ -110,6 +110,6 @@ if __name__ == "__main__":
     # valeurs en um
     rayons_courbure = np.array([526 for i in range(64)])
     hauteurs = np.array([np.clip(np.random.exponential(40), 0, 120) for i in range(64)])
-    aires_totales, forces_totales = loi_totale(rayons_courbure, hauteurs)
-    affichage.loi(aires_totales, forces_totales)
+    forces_totales, aires_totales = loi_totale(rayons_courbure, hauteurs)
+    affichage.loi(forces_totales, aires_totales)
     affichage.hauteur(hauteurs)

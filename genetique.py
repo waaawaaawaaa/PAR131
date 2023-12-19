@@ -61,10 +61,10 @@ def score(individu, points):
     score = 0
     aire_0 = points[-1][1]  # Aire pour normalisee
     force_0 = points[-1][0]  # Force pour normalisee
-    aires, forces = algo_direct.loi_totale(individu.get_rayons_courbure(),
+    forces, aires = algo_direct.loi_totale(individu.get_rayons_courbure(),
                                            individu.get_hauteurs())
     for point in points:
-        force, aire = algo_direct.get_force_aire(aires, forces, point)
+        force, aire = algo_direct.get_force_aire(forces, aires, point)
         score = (score + ((point[1] - aire)/aire_0)**2
                  + ((point[0] - force)/force_0)**2)
     return score
@@ -186,12 +186,12 @@ def genetique(points, limite=None):
     population = creer_population(N)
     # for individu in population:
 
-    #     aires, forces = algo_direct.loi_totale(
+    #     forces, aires = algo_direct.loi_totale(
     #                     individu.get_rayons_courbure(),
     #                     individu.get_hauteurs())
-    #     liste_courbes.append((aires, forces))
+    #     liste_courbes.append((forces, aires))
     #     affichage.superposer_lois(liste_courbes, points=points)
-    # affichage.loi(aires, forces)
+    # affichage.loi(forces, aires)
     # affichage.hauteur(individu.get_hauteurs())
 
     # return
@@ -201,14 +201,14 @@ def genetique(points, limite=None):
         meilleur_individu = selection(population, points)[0]
         print(score(meilleur_individu, points))
         liste_score.append(score(meilleur_individu, points))
-        aires, forces = algo_direct.loi_totale(
+        forces, aires = algo_direct.loi_totale(
                         meilleur_individu.get_rayons_courbure(),
                         meilleur_individu.get_hauteurs())
-        liste_courbes.append((aires, forces))
-        affichage.superposer_lois_degrade([(aires, forces)], points=points)
+        liste_courbes.append((forces, aires))
+        affichage.superposer_lois_degrade([(forces, aires)], points=points)
         # affichage.score(liste_score)
     affichage.score(liste_score)
-    affichage.loi(aires, forces)
+    affichage.loi(forces, aires)
     affichage.hauteur(meilleur_individu.get_hauteurs())
 
 
