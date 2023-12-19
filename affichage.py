@@ -121,6 +121,43 @@ def superposer_lois(listes, points=None):
     plt.title('Superposition de lois force-aire')
     plt.savefig("superposition_lois.png")
     plt.show()
+    
+    
+def superposer_loi_points(forces, aires , points, generation, individu_score):
+    """
+    Superpose une loi avec les points a atteindre.
+
+    Parameters
+    ----------
+    forces : list of floats
+        Liste avec les valeurs des forces.
+    aires : list of floats
+        Liste avec les valeurs des aires totales.
+    points : list of couple of floats
+        Liste des points (force, aire) a atteindre.
+    generation : integer
+        Numero de la generation.
+    individu_score : float
+        Score de l'individu lie a la loi.
+
+    Returns
+    -------
+    None.
+
+    """
+
+    plt.plot(forces, aires, color="b")
+
+    points_forces, points_aires = zip(*points)
+    plt.scatter(points_forces, points_aires, color='red',
+                    marker='x', label='Points recherchés')
+
+    plt.xlabel('Force (N)')
+    plt.ylabel('Aire (m²)')
+    plt.title("Génération " + str(generation)
+              +  " Score " + str(round((individu_score),5)))
+    plt.savefig("superposition_lois.png")
+    plt.show()
 
 
 def superposer_lois_degrade(listes, points=None):
@@ -197,7 +234,7 @@ def score(scores):
     None.
 
     """
-    plt.plot([i for i in range(len(score))], score)
+    plt.plot([i for i in range(len(scores))], scores)
     plt.xlabel('Génération')
     plt.ylabel('Score')
     plt.show()
