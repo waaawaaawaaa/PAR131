@@ -78,7 +78,7 @@ def loi_totale(rayons_courbure, hauteurs):
     return aires_totales, forces_totales
 
 
-def get_force_aire(rayons_courbure, hauteurs, point):
+def get_force_aire(aires, forces, point):
     """Retrouve les points necessaires aux scores.
 
     A partir d'un point, retrouve la force correspondant a l'aire de ce
@@ -86,21 +86,20 @@ def get_force_aire(rayons_courbure, hauteurs, point):
 
     Parameters
     ----------
-    rayons_courbure : np.array of floats
-        Liste avec les rayons de courbure des spheres.
-    hauteurs : np.array of floats
-        Liste avec les hauteurs des spheres.
+    aires : np.array of floats
+        Liste des aires totales provenant de la loi de frottement.
+    forces : np.array of floats
+        Liste des forces totales provenant de la loi de frottement.
     point : couple of float
-        Point que l'on souhaite atteindre (force, aire)
+        Point que l'on souhaite atteindre (force, aire).
 
     Returns
     -------
     force : float
-        Force correspondant a l'aire du point
+        Force correspondant a l'aire du point.
     aire : float
-        Aire totale correspondant a la force du point
+        Aire totale correspondant a la force du point.
     """
-    aires, forces = loi_totale(rayons_courbure, hauteurs)
     i = min(range(len(forces)), key=lambda i: abs(forces[i] - point[0]))
     j = min(range(len(aires)), key=lambda j: abs(aires[j] - point[1]))
     return forces[j], aires[i]
