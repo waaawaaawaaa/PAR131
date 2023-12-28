@@ -4,6 +4,7 @@ import algo_direct
 from Individu import Individu
 import random
 import affichage
+import time
 
 
 def creer_individu():
@@ -20,14 +21,16 @@ def creer_individu():
     return individu
 
 
-def creer_population(N):
+def creer_population(N, points):
     """
-    Cree la population entiere.
+    Cree la population entiere pour la premiere generation.
 
     Parameters
     ----------
     N : integer
         Nombre d'individus dans la population.
+    points : list of couple of floats
+        Points (force, aire_totale) du cahier des charges
 
     Returns
     -------
@@ -37,44 +40,10 @@ def creer_population(N):
     """
     population = []
     for i in range(N):
-        population.append(creer_individu())
+        individu = creer_individu()
+        individu.set_score(points)
+        population.append(individu)
     return population
-
-
-def score(individu, points, poids=True):
-    """
-    Definit le score de l'individu.
-
-    Parameters
-    ----------
-    individu : Individu
-        Individu dont on va calculer le score.
-    points : list of couple of floats
-        Points (force, aire_totale) du cahier des charges
-
-    Returns
-    -------
-    score : float
-        Score obtenu par la methode des moindres carres
-
-    """
-    score = 0
-    aire_0 = points[-1][1]  # Aire pour normalisee
-    force_0 = points[-1][0]  # Force pour normalisee
-    forces, aires = algo_direct.loi_totale(individu.get_rayons_courbure(),
-                                           individu.get_hauteurs())
-    for i in range(len(points)):
-        point = points[i]
-        force, aire = algo_direct.get_force_aire(forces, aires, point)
-        if i == 0 and poids:
-            score = (1 * (((point[1] - aire)/aire_0)**2
-                     + ((point[0] - force)/force_0)**2))
-        else:
-            score = (score + ((point[1] - aire)/aire_0)**2
-                     + ((point[0] - force)/force_0)**2)
-    if poids:
-        return score/2
-    return score/len(points)
 
 
 def selection(population, points):
@@ -95,29 +64,9 @@ def selection(population, points):
 
     """
     population_triee = sorted(population,
-                              key=lambda individu: score(individu, points))
+                              key=lambda individu: individu.get_score())
     population_selectionnee = population_triee[:round(len(population)/2)]
     return population_selectionnee
-
-
-def enjambement(individu1, individu2):
-    """
-    Realise l'enjambement entre deux individus.
-
-    Parameters
-    ----------
-    individu1 : Individu
-        Premiere individu.
-    individu2 : Individu
-        Deuxieme individu.
-
-    Returns
-    -------
-    individu_enfant : Individu
-        Individu issu de l'enjambement.
-
-    """
-    return Individu(individu1, individu2)
 
 
 def nouvelle_generation(population, points):
@@ -140,10 +89,14 @@ def nouvelle_generation(population, points):
     nouvelle_population = selection(population, points)
     N = len(nouvelle_population)
     for i in range(0, N-1, 2):
-        nouvelle_population.append(mutation(Individu(nouvelle_population[i],
-                                            nouvelle_population[i+1])))
-        nouvelle_population.append(mutation(Individu(nouvelle_population[i+1],
-                                            nouvelle_population[i])))
+        individu1 = mutation(Individu(nouvelle_population[i],
+                                      nouvelle_population[i+1]))
+        individu2 = mutation(Individu(nouvelle_population[i+1],
+                                      nouvelle_population[i]))
+        individu1.set_score(points)
+        individu2.set_score(points)
+        nouvelle_population.append(individu1)
+        nouvelle_population.append(individu2)
     return nouvelle_population
 
 
@@ -193,7 +146,7 @@ def genetique(points, limite=None):
     liste_score = []
 
     N = 50  # Taille de la population
-    population = creer_population(N)
+    population = creer_population(N, points)
     # for individu in population:
 
     #     forces, aires = algo_direct.loi_totale(
@@ -210,8 +163,8 @@ def genetique(points, limite=None):
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population, points)[0]
         print("Génération : ", i)
-        print(score(meilleur_individu, points))
-        liste_score.append(score(meilleur_individu, points))
+        print(meilleur_individu.get_score())
+        liste_score.append(meilleur_individu.get_score())
         forces, aires = algo_direct.loi_totale(
                         meilleur_individu.get_rayons_courbure(),
                         meilleur_individu.get_hauteurs())
@@ -219,11 +172,14 @@ def genetique(points, limite=None):
         affichage.superposer_loi_points(forces, aires, points, i,
                                         liste_score[i])
         # affichage.score(liste_score)
-    print(score(meilleur_individu, points, False))
+    meilleur_individu.set_score(points, False)  # Score sans les poids
+    print(meilleur_individu.get_score())
     affichage.score(liste_score)
     affichage.loi(forces, aires)
     affichage.hauteur(meilleur_individu.get_hauteurs())
 
 
 if __name__ == "__main__":
+    debut = time.time()
     genetique([(558208229327, 1956593), (558208229327*2, 1956593*2)])
+    print(time.time() - debut)

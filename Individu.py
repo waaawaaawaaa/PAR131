@@ -1,6 +1,7 @@
 """Classe individu qui represente une possibilite de surface."""
 import numpy as np
 import random
+import algo_direct
 
 nombre_asperites = 64
 
@@ -235,6 +236,54 @@ class Individu:
 
         """
         self.__rayons[i] = valeur
+
+    def set_score(self, points, poids=True):
+        """
+        Definit le score de l'individu.
+
+        Parameters
+        ----------
+        individu : Individu
+            Individu dont on va calculer le score.
+        points : list of couple of floats
+            Points (force, aire_totale) du cahier des charges
+
+        Returns
+        -------
+        score : float
+            Score obtenu par la methode des moindres carres
+
+        """
+        score = 0
+        aire_0 = points[-1][1]  # Aire pour normalisee
+        force_0 = points[-1][0]  # Force pour normalisee
+        forces, aires = algo_direct.loi_totale(self.get_rayons_courbure(),
+                                               self.get_hauteurs())
+        for i in range(len(points)):
+            point = points[i]
+            force, aire = algo_direct.get_force_aire(forces, aires, point)
+            if i == 0 and poids:
+                score = (1 * (((point[1] - aire)/aire_0)**2
+                         + ((point[0] - force)/force_0)**2))
+            else:
+                score = (score + ((point[1] - aire)/aire_0)**2
+                         + ((point[0] - force)/force_0)**2)
+        if poids:
+            self.__score = score/2
+        else:
+            self.__score = score/len(points)
+
+    def get_score(self):
+        """
+        Obtient le score d'un individu.
+
+        Returns
+        -------
+        float
+            Score de l'individu.
+
+        """
+        return self.__score
 
 
 if __name__ == "__main__":
