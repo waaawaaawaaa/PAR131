@@ -4,6 +4,7 @@ import random
 import algo_direct
 
 nombre_asperites = 64
+changement_rayons = True
 
 
 class Individu:
@@ -48,12 +49,19 @@ class Individu:
         None.
 
         """
-        if individu1 is None:
-            self.__hauteurs = self.__hauteurs_aleatoires()
-            self.__rayons = self.__rayons_aleatoires()
+        if changement_rayons:
+            if individu1 is None:
+                self.__hauteurs = self.__hauteurs_aleatoires()
+                self.__rayons = self.__rayons_aleatoires()
+            else:
+                self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
+                self.__rayons = self.__rayons_fusion(individu1, individu2)
         else:
-            self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
-            self.__rayons = self.__rayons_fusion(individu1, individu2)
+            if individu1 is None:
+                self.__hauteurs = self.__hauteurs_aleatoires()
+            else:
+                self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
+            self.__rayons = np.array([526 for i in range(nombre_asperites)])
 
     def __hauteurs_aleatoires(self):
         """
@@ -269,7 +277,7 @@ class Individu:
                 score = (score + ((point[1] - aire)/aire_0)**2
                          + ((point[0] - force)/force_0)**2)
         if poids:
-            self.__score = score/2
+            self.__score = score/len(points)
         else:
             self.__score = score/len(points)
 

@@ -145,17 +145,21 @@ def superposer_loi_points(forces, aires, points, generation, individu_score):
     None.
 
     """
-    plt.plot(forces, aires, color="b")
+    plt.plot(forces/(10**12), aires/(10**12), color="b")
 
-    points_forces, points_aires = zip(*points)
-    plt.scatter(points_forces, points_aires, color='red',
+    # map applique la fonction liste a chaque tuple renvoye par zip
+    points_forces, points_aires = map(np.array, zip(*points))
+    plt.scatter(points_forces/(10**12), points_aires/(10**12), color='red',
                 marker='x', label='Points recherchés')
 
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
     plt.title("Génération " + str(generation)
               + " Score " + str(round((individu_score), 5)))
-    plt.savefig("superposition_lois.png")
+    if generation == 0:
+        plt.savefig("loi_generation0.png")
+    elif generation == 99:
+        plt.savefig("loi_generation99.png")
     plt.show()
 
 
@@ -215,6 +219,8 @@ def hauteur(hauteurs):
     hauteur_max = np.max(hauteurs)  # Hauteur maximale
     bins = [i*hauteur_max/N for i in range(N+1)]  # Bornes des barres
     plt.hist(hauteurs, bins)
+    plt.xlabel('Hauteur (\u03BCm)')
+    plt.ylabel("Nombre d'occurences")
     plt.savefig("hauteurs.png")  # Permet de sauvegarder le fichier
     plt.show()
 
@@ -236,6 +242,47 @@ def score(scores):
     plt.plot([i for i in range(len(scores))], scores)
     plt.xlabel('Génération')
     plt.ylabel('Score')
+    if len(scores) == 100:
+        plt.savefig('scores.png')
+    plt.show()
+
+
+def superposer_loi_points_normalise(forces, aires, points, generation,
+                                    individu_score):
+    """
+    Superpose une loi avec les points a atteindre.
+
+    Parameters
+    ----------
+    forces : list of floats
+        Liste avec les valeurs des forces.
+    aires : list of floats
+        Liste avec les valeurs des aires totales.
+    points : list of couple of floats
+        Liste des points (force, aire) a atteindre.
+    generation : integer
+        Numero de la generation.
+    individu_score : float
+        Score de l'individu lie a la loi.
+
+    Returns
+    -------
+    None.
+
+    """
+    aire_0 = points[-1][1]  # Aire pour normalisee
+    force_0 = points[-1][0]  # Force pour normalisee
+    plt.plot(forces/force_0, aires/aire_0, color="b")
+    # map applique la fonction liste a chaque tuple renvoye par zip
+    points_forces, points_aires = map(np.array, zip(*points))
+    plt.scatter(points_forces/force_0, points_aires/aire_0, color='red',
+                marker='x', label='Points recherchés')
+
+    plt.xlabel('P/P\u2080')
+    plt.ylabel('A/A\u2080')
+    plt.title("Génération " + str(generation)
+              + " Score " + str(round((individu_score), 5)))
+    plt.savefig("superposition_lois.png")
     plt.show()
 
 
