@@ -242,8 +242,31 @@ def score(scores):
     plt.plot([i for i in range(len(scores))], scores)
     plt.xlabel('Génération')
     plt.ylabel('Score')
+    # if len(scores) == 100:
+    plt.savefig('scores.png')
+    plt.show()
+
+
+def score_log(scores):
+    """
+    Trace l'evolution du score en fonction de la generation en échelle log.
+
+    Parameters
+    ----------
+    scores : list of floats
+        Liste des scores.
+
+    Returns
+    -------
+    None.
+
+    """
+    plt.plot([i for i in range(len(scores))], scores)
+    plt.xlabel('Génération')
+    plt.ylabel('Score')
+    plt.yscale('log')
     if len(scores) == 100:
-        plt.savefig('scores.png')
+        plt.savefig('scores_log.png')
     plt.show()
 
 
