@@ -4,7 +4,7 @@ import random
 import algo_direct
 
 nombre_asperites = 64
-changement_rayons = True
+changement_rayons = False
 
 
 class Individu:

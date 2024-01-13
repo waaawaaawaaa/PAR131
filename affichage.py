@@ -80,6 +80,8 @@ def loi(forces, aires):
     plt.plot(forces, aires)
     plt.xlabel('Force (N)')
     plt.ylabel('A\u1D3F (m²)')
+    plt.yscale('log')
+    plt.xscale('log')
     # Définir la plage des valeurs des forces et des aires pour le zoom
     # plt.xlim(forces[0], forces[7500])
     # plt.ylim(aires[0], aires[7500])
@@ -118,6 +120,8 @@ def superposer_lois(listes, points=None):
 
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
+    plt.yscale('log')
+    plt.xscale('log')
     plt.title('Superposition de lois force-aire')
     plt.savefig("superposition_lois.png")
     plt.show()
@@ -131,7 +135,8 @@ def superposer_loi_points(forces, aires, points, generation, individu_score):
     ----------
     forces : list of floats
         Liste avec les valeurs des forces.
-    aires : list of floats
+    air Numero de la generation.
+    indes : list of floats
         Liste avec les valeurs des aires totales.
     points : list of couple of floats
         Liste des points (force, aire) a atteindre.
