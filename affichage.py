@@ -117,7 +117,7 @@ def superposer_lois(listes, points=None):
         points_forces, points_aires = zip(*points)
         plt.scatter(points_forces, points_aires, color='red',
                     marker='x', label='Points recherchés')
-
+    plt.legend()
     plt.xlabel('Force (N)')
     plt.ylabel('Aire (m²)')
     plt.yscale('log')

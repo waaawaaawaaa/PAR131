@@ -1,10 +1,7 @@
 """Classe individu qui represente une possibilite de surface."""
-import numpy as np
 import random
+import numpy as np
 import algo_direct
-
-nombre_asperites = 64
-changement_rayons = False
 
 
 class Individu:
@@ -33,6 +30,9 @@ class Individu:
 
     """
 
+    nombre_asperites = 64
+    changement_rayons = False
+
     def __init__(self, individu1=None, individu2=None):
         """
         Initialise une instance de Individu.
@@ -49,7 +49,7 @@ class Individu:
         None.
 
         """
-        if changement_rayons:
+        if self.changement_rayons:
             if individu1 is None:
                 self.__hauteurs = self.__hauteurs_aleatoires()
                 self.__rayons = self.__rayons_aleatoires()
@@ -61,7 +61,9 @@ class Individu:
                 self.__hauteurs = self.__hauteurs_aleatoires()
             else:
                 self.__hauteurs = self.__hauteurs_fusion(individu1, individu2)
-            self.__rayons = np.array([526 for i in range(nombre_asperites)])
+            self.__rayons = np.array([526 for i in range(
+                                      self.nombre_asperites)])
+        self.__score = 0
 
     def __hauteurs_aleatoires(self):
         """
@@ -76,7 +78,7 @@ class Individu:
         # On veut etre dans 0um et 120um avec une precision de 1um
         # Hauteurs en um
         hauteurs = np.array([random.randint(0, 120) for i
-                             in range(nombre_asperites)])
+                             in range(self.nombre_asperites)])
         return hauteurs
 
     def __hauteurs_fusion(self, individu1, individu2):
@@ -98,8 +100,8 @@ class Individu:
         """
         # Probabilite de prendre les genes du pere.
         seuil = random.random()
-        hauteurs = np.array([0 for i in range(nombre_asperites)])
-        for i in range(nombre_asperites):
+        hauteurs = np.array([0 for i in range(self.nombre_asperites)])
+        for i in range(self.nombre_asperites):
             test = random.random()
             if test < seuil:  # Si on est avant la coupure
                 hauteurs[i] = individu1.get_hauteur(i)
@@ -179,7 +181,7 @@ class Individu:
         # On veut etre dans 100um et 530um avec une precision de 10um
         # rayons en um
         rayons = np.array([10 * random.randint(10, 53) for i
-                           in range(nombre_asperites)])
+                           in range(self.nombre_asperites)])
         return rayons
 
     def __rayons_fusion(self, individu1, individu2):
@@ -201,8 +203,8 @@ class Individu:
         """
         # Probabilite de prendre les genes du pere.
         seuil = random.random()
-        rayons = np.array([0 for i in range(nombre_asperites)])
-        for i in range(nombre_asperites):
+        rayons = np.array([0 for i in range(self.nombre_asperites)])
+        for i in range(self.nombre_asperites):
             test = random.random()
             if test < seuil:  # Si on est avant la coupure
                 rayons[i] = individu1.get_rayon(i)
@@ -267,8 +269,7 @@ class Individu:
         force_0 = points[-1][0]  # Force pour normalisee
         forces, aires = algo_direct.loi_totale(self.get_rayons_courbure(),
                                                self.get_hauteurs())
-        for i in range(len(points)):
-            point = points[i]
+        for i, point in enumerate(points):
             force, aire = algo_direct.get_force_aire(forces, aires, point)
             if i == 0 and poids:
                 score = (1 * (((point[1] - aire)/aire_0)**2
