@@ -54,7 +54,7 @@ def creer_population(taille_population, points):
     # On cree une version de la fonction creer_individu sans arguments d'entree
     creer_individu_partiel = partial(creer_individu, points)
 
-    with multiprocessing.Pool() as pool:
+    with multiprocessing.Pool(nombre_coeurs - 1) as pool:
         # Utilisation de pool.map pour créer tous les individus en parallèle
         population = pool.map(creer_individu_partiel, range(taille_population))
     return population
@@ -156,15 +156,7 @@ def mutation(individu, points):
 
     """
     probabilite = 0.1  # Probabilite de mutation d'un gene
-    for i in range(len(individu.get_hauteurs())):
-        if random.random() < probabilite:  # S'il y a mutation sur la hauteur
-            hauteur = random.randint(0, 120)  # En um
-            individu.set_hauteur(i, hauteur)
-    if Individu.changement_rayons:
-        for i in range(len(individu.get_rayons_courbure())):
-            if random.random() < probabilite:  # S'il y a mutation sur le rayon
-                rayon = 10 * random.randint(10, 53)  # En um
-                individu.set_rayon(i, rayon)
+    individu.mutation(probabilite)
     individu.set_score(points)
     return individu
 

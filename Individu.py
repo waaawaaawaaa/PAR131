@@ -12,22 +12,50 @@ class Individu:
 
     Attributes
     ----------
+    nombre_asperites : integer
+        Nombre d'asperites de l'ensemble des individus.
+    changement_rayons : boolean
+        Presence ou non des rayons comme genes pour nos individus.
     hauteurs : np.array of floats
         Hauteurs de chaque asperite.
     rayons : np.array of floats
         Rayons de courbure de chaque asperite.
+    score : float
+        Score de notre individu.
 
-    Methods
+    Public methods
     -------
-    get_hauteur(i: int, j: int) -> float
+    get_hauteur(i: int) -> float
         Obtient la hauteur d'une asperite.
-    set_hauteur(i: int, j: int, valeur: float)
-        Définit la hauteur d'une asperite.
+    set_hauteur(i: int, valeur: float)
+        Definit la hauteur d'une asperite.
     get_hauteurs() -> np.array of floats
         Obtient les hauteurs des asperites.
     get_rayons_courbure -> np.array of floats
         Obtient les rayons de courbure des asperites.
+    get_rayon(i: int) -> float
+        Obtient le rayon d'une asperite.
+    set_rayon(i: int, valeur: float)
+        Definit le rayon d'une asperite.
+    set_score(points: list of couple of floats, poids: boolean)
+        Definit le score de l'individu.
+    get_score() -> float
+        Obtient le score d'un individu.
+    mutation(probabilite: float)
+        Realise la mutation de l'individu.
 
+    Private methods
+    -------
+    __hauteurs_aleatoires() -> np.array of floats
+        Cree aleatoirement les hauteurs de l'Individu.
+    __hauteurs_fusion(individu1: Individu, individu2: Individu)
+                      -> np of array of floats
+        Fusionne les hauteurs des Individus parents pour avoir celles enfants.
+    __rayons_aleatoires() -> np.array of floats
+        Cree aleatoirement les rayons de l'Individu.
+    __rayons_fusion(individu1: Individu, individu2: Individu)
+                      -> np of array of floats
+        Fusionne les rayons des Individus parents pour avoir celles enfants.
     """
 
     nombre_asperites = 64
@@ -293,6 +321,30 @@ class Individu:
 
         """
         return self.__score
+
+    def mutation(self, probabilite):
+        """
+        Realise la mutation de l'individu.
+
+        Parameters
+        ----------
+        probabilite : float
+            Probabilite pour un gene de muter.
+
+        Returns
+        -------
+        None.
+
+        """
+        for i in range(len(self.__hauteurs)):
+            if random.random() < probabilite:  # Si mutation sur la hauteur
+                hauteur = random.randint(0, 120)  # En um
+                self.set_hauteur(i, hauteur)
+        if self.changement_rayons:
+            for i in range(len(self.__rayons)):
+                if random.random() < probabilite:  # Si a mutation sur le rayon
+                    rayon = 10 * random.randint(10, 53)  # En um
+                    self.set_rayon(i, rayon)
 
 
 if __name__ == "__main__":
