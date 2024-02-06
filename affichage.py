@@ -220,7 +220,7 @@ def hauteur(hauteurs):
     None.
 
     """
-    N = 60  # Nombre de barres plus 1
+    N = 121  # Nombre de barres plus 1
     hauteur_max = np.max(hauteurs)  # Hauteur maximale
     bins = [i*hauteur_max/N for i in range(N+1)]  # Bornes des barres
     plt.hist(hauteurs, bins)

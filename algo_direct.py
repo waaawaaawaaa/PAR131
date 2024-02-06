@@ -110,12 +110,14 @@ if __name__ == "__main__":
     # valeur de rayon de courbure issue des transparents de A.Aymard slide 39
     # valeurs en um
     # rayons_courbure = np.array([526 for i in range(64)])
-    A = [i for i in range(1,100000)]
-    B = [i**(2/3) for i in range(1, 100000)]
-    rayons_courbure = np.array([526 for i in range(64)])
-    hauteurs = np.array([120 for i in range(64)])
+    rayons_courbure = np.array([526 for i in range(1000)])
+    hauteurs = np.array([])
+    while len(hauteurs) != 1000:
+        hauteur = np.random.exponential(40)
+        if hauteur <= 120:
+            hauteurs = np.append(hauteurs, round(hauteur))
+    # hauteurs = np.array([random.randint(0, 120) for i in range(1000)])
     # hauteurs = np.array([np.clip(np.random.exponential(40), 0, 120) for i in range(64)])
     forces_totales, aires_totales = loi_totale(rayons_courbure, hauteurs)
-    #affichage.loi(forces_totales, aires_totales)
-    affichage.superposer_lois([(A, B), (forces_totales,aires_totales)])
+    affichage.loi(forces_totales, aires_totales)
     affichage.hauteur(hauteurs)

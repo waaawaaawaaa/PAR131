@@ -58,7 +58,7 @@ class Individu:
         Fusionne les rayons des Individus parents pour avoir celles enfants.
     """
 
-    nombre_asperites = 64
+    nombre_asperites = 1000
     changement_rayons = False
 
     def __init__(self, individu1=None, individu2=None):
@@ -338,7 +338,13 @@ class Individu:
         """
         for i in range(len(self.__hauteurs)):
             if random.random() < probabilite:  # Si mutation sur la hauteur
-                hauteur = random.randint(0, 120)  # En um
+                delta = random.randint(-5, 5)  # En um
+                if self.__hauteurs[i] + delta < 0:
+                    hauteur = 0
+                elif self.__hauteurs[i] + delta > 120:
+                    hauteur = 120
+                else:
+                    hauteur =self.__hauteurs[i] + delta
                 self.set_hauteur(i, hauteur)
         if self.changement_rayons:
             for i in range(len(self.__rayons)):

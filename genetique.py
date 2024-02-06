@@ -155,7 +155,7 @@ def mutation(individu, points):
         Individu apres la mutation.
 
     """
-    probabilite = 0.1  # Probabilite de mutation d'un gene
+    probabilite = 0.4  # Probabilite de mutation d'un gene
     individu.mutation(probabilite)
     individu.set_score(points)
     return individu
@@ -193,8 +193,8 @@ def genetique(points, limite=None):
     # affichage.hauteur(individu.get_hauteurs())
 
     # return
-
-    for i in range(100):  # On fait 100 generations
+    i = 0  # Numero de la generation
+    while i <= 20 or not liste_score[-20] == liste_score[-1]:
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population)[0]
         print("Génération : ", i)
@@ -207,9 +207,10 @@ def genetique(points, limite=None):
         affichage.superposer_loi_points(forces, aires, points, i,
                                         liste_score[i])
         affichage.score(liste_score)
+        i += 1
     print(meilleur_individu.set_score(points, False))  # Score sans les poids
     print(meilleur_individu.get_score())
-    print(meilleur_individu.get_rayons_courbure())
+    # print(meilleur_individu.get_rayons_courbure())
     affichage.score(liste_score)
     affichage.loi(forces, aires)
     affichage.hauteur(meilleur_individu.get_hauteurs())
@@ -217,5 +218,5 @@ def genetique(points, limite=None):
 
 if __name__ == "__main__":
     debut = time.time()
-    genetique([(558208229327, 1956593), (558208229327*2, 1956593*2)])
+    genetique([(4703896739610, 16035538)])
     print(time.time() - debut)
