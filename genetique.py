@@ -194,7 +194,8 @@ def genetique(points, limite=None):
 
     # return
     i = 0  # Numero de la generation
-    while i <= 20 or not liste_score[-20] == liste_score[-1]:
+    #while i <= 20 or not liste_score[-20] == liste_score[-1]:
+    while len(liste_score) == 0 or liste_score[-1] > 10**(-9):
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population)[0]
         print("Génération : ", i)
@@ -218,5 +219,5 @@ def genetique(points, limite=None):
 
 if __name__ == "__main__":
     debut = time.time()
-    genetique([(4703896739610, 16035538)])
+    genetique([(885209499631, 3822744), (5063666985597, 17680522)])
     print(time.time() - debut)

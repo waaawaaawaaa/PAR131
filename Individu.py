@@ -338,13 +338,13 @@ class Individu:
         """
         for i in range(len(self.__hauteurs)):
             if random.random() < probabilite:  # Si mutation sur la hauteur
-                delta = random.randint(-5, 5)  # En um
-                if self.__hauteurs[i] + delta < 0:
-                    hauteur = 0
-                elif self.__hauteurs[i] + delta > 120:
-                    hauteur = 120
+                if self.__hauteurs[i] < 5:  # Si on la hauteur est proche de 0
+                    delta = random.randint(- self.__hauteurs[i], 5)  # En um
+                elif self.__hauteurs[i] > 115:
+                    delta = random.randint(-5, 120 - self.__hauteurs[i])
                 else:
-                    hauteur =self.__hauteurs[i] + delta
+                    delta = random.randint(-5, 5)  # En um
+                hauteur = self.__hauteurs[i] + delta
                 self.set_hauteur(i, hauteur)
         if self.changement_rayons:
             for i in range(len(self.__rayons)):
