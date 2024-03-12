@@ -1,4 +1,5 @@
 """Classe individu qui represente une possibilite de surface."""
+
 import random
 import numpy as np
 import algo_direct

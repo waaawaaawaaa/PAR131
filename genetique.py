@@ -161,7 +161,7 @@ def mutation(individu, points):
     return individu
 
 
-def genetique(points, limite=None):
+def genetique(points):
     """
     Realise l'algorithme génétique d'optimisation.
 
@@ -169,15 +169,12 @@ def genetique(points, limite=None):
     ----------
     points : list of pairs of floats
         Liste des points (force, aire de contact) du cahier des charges.
-    limite : float
-        Valeur des moindres carrés pour l'acceptabilité.
 
     Returns
     -------
     None.
 
     """
-    liste_courbes = []
     liste_score = []
 
     taille_population = 50  # Taille de la population
@@ -194,20 +191,21 @@ def genetique(points, limite=None):
 
     # return
     i = 0  # Numero de la generation
-    #while i <= 20 or not liste_score[-20] == liste_score[-1]:
-    while len(liste_score) == 0 or liste_score[-1] > 10**(-9):
+    # while i <= 20 or not liste_score[-20] == liste_score[-1]:
+    while len(liste_score) == 0 or liste_score[-1] > 10**(-8):
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population)[0]
         print("Génération : ", i)
         print(meilleur_individu.get_score())
         liste_score.append(meilleur_individu.get_score())
-        forces, aires = algo_direct.loi_totale(
-                        meilleur_individu.get_rayons_courbure(),
-                        meilleur_individu.get_hauteurs())
-        liste_courbes.append((forces, aires))
-        affichage.superposer_loi_points(forces, aires, points, i,
-                                        liste_score[i])
-        affichage.score(liste_score)
+        if i % 100 == 0:
+            forces, aires = algo_direct.loi_totale(
+                            meilleur_individu.get_rayons_courbure(),
+                            meilleur_individu.get_hauteurs())
+            affichage.hauteur(meilleur_individu.get_hauteurs())
+            affichage.superposer_loi_points(forces, aires, points, i,
+                                            liste_score[i])
+            affichage.score(liste_score)
         i += 1
     print(meilleur_individu.set_score(points, False))  # Score sans les poids
     print(meilleur_individu.get_score())
@@ -219,5 +217,14 @@ def genetique(points, limite=None):
 
 if __name__ == "__main__":
     debut = time.time()
-    genetique([(885209499631, 3822744), (5063666985597, 17680522)])
+    genetique([(18384800256, 149053),
+               (110132014236, 646779),
+               (328995828791, 1617114),
+               (768378053527, 3362131),
+               (1524781895432, 6100286),
+               (2748150476420, 10200745),
+               (4597556442582, 16076294),
+               (7363112599038, 24700245),
+               (11398472967470, 36810924),
+               (17075732083025, 53111625)])
     print(time.time() - debut)
