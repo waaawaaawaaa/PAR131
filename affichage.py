@@ -248,7 +248,7 @@ def score(scores):
     plt.xlabel('Génération')
     plt.ylabel('Score')
     # if len(scores) == 100:
-    plt.savefig('scores.png')
+    plt.savefig('images/scores.png')
     plt.show()
 
 
@@ -271,7 +271,7 @@ def score_log(scores):
     plt.ylabel('Score')
     plt.yscale('log')
     if len(scores) == 100:
-        plt.savefig('scores_log.png')
+        plt.savefig('images/scores_log.png')
     plt.show()
 
 
