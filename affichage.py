@@ -127,7 +127,8 @@ def superposer_lois(listes, points=None):
     plt.show()
 
 
-def superposer_loi_points(forces, aires, points, generation, individu_score):
+def superposer_loi_points(forces, aires, points, generation, individu_score,
+                          n=None):
     """
     Superpose une loi avec les points a atteindre.
 
@@ -144,6 +145,8 @@ def superposer_loi_points(forces, aires, points, generation, individu_score):
         Numero de la generation.
     individu_score : float
         Score de l'individu lie a la loi.
+    n : integer
+        Numero du test de l'algorithme.
 
     Returns
     -------
@@ -161,10 +164,7 @@ def superposer_loi_points(forces, aires, points, generation, individu_score):
     plt.ylabel('Aire (m²)')
     plt.title("Génération " + str(generation)
               + " Score " + str(round((individu_score), 5)))
-    if generation == 0:
-        plt.savefig("images/loi_generation0.png")
-    elif generation == 99:
-        plt.savefig("images/loi_generation99.png")
+    plt.savefig("images/loi_generation" + str(n) + ".png")
     plt.show()
 
 
@@ -206,7 +206,7 @@ def superposer_lois_degrade(listes, points=None):
     plt.show()
 
 
-def hauteur(hauteurs):
+def hauteur(hauteurs, n=None):
     """
     Cree l'histogramme des hauteurs.
 
@@ -214,6 +214,8 @@ def hauteur(hauteurs):
     ----------
     hauteurs : list of floats
         Liste des hauteurs.
+    n : integer
+        Numero du test de l'algorithme.
 
     Returns
     -------
@@ -226,11 +228,11 @@ def hauteur(hauteurs):
     plt.hist(hauteurs, bins)
     plt.xlabel('Hauteur (\u03BCm)')
     plt.ylabel("Nombre d'occurences")
-    plt.savefig("images/hauteurs.png")  # Permet de sauvegarder le fichier
+    plt.savefig("images/hauteurs" + str(n) + ".png")  # Permet de sauvegarder
     plt.show()
 
 
-def score(scores):
+def score(scores, n=None):
     """
     Trace l'evolution du score en fonction de la generation.
 
@@ -238,6 +240,8 @@ def score(scores):
     ----------
     scores : list of floats
         Liste des scores.
+    n : integer
+        Numero du test de l'algorithme.
 
     Returns
     -------
@@ -247,8 +251,7 @@ def score(scores):
     plt.plot([i for i in range(len(scores))], scores)
     plt.xlabel('Génération')
     plt.ylabel('Score')
-    # if len(scores) == 100:
-    plt.savefig('images/scores.png')
+    plt.savefig('images/scores' + str(n) + '.png')
     plt.show()
 
 
