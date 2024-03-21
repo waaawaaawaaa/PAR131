@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 """Module qui permet les differents affichages."""
 
 import matplotlib.pyplot as plt

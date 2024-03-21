@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 """Module qui permet le calcul des aires de contact et des forces."""
 
 import random

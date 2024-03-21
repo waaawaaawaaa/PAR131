@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 """Classe individu qui represente une possibilite de surface."""
 
 import random
