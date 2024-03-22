@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 """Module utilisant un algorithme génétique."""
 
 import random
