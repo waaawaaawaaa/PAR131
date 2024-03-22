@@ -232,7 +232,7 @@ def genetique(points, n=None):
 if __name__ == "__main__":
     # debut = time.time()
     liste = []
-    for n in range(100):
+    for n in range(10):
         hauteurs = genetique([(18384800256 * (90*i+1),
                                18384800256 * (90*i+1) * 3.1069013782046355e-06)
                               for i in range(10)],
