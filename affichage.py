@@ -61,7 +61,7 @@ def spheres(aires):
     plt.xlabel('x')  # Nom de l'axe x
     plt.ylabel('y')  # Nom de l'axe y
     plt.savefig("images/aire.png")  # Permet de sauvegarder le fichier
-    plt.show()  # Affiche le graphique
+    plt.close()  # Affiche le graphique
 
 
 def loi(forces, aires):
@@ -89,7 +89,7 @@ def loi(forces, aires):
     # plt.xlim(forces[0], forces[7500])
     # plt.ylim(aires[0], aires[7500])
     plt.savefig("images/loi.png")  # Permet de sauvegarder le fichier
-    plt.show()
+    plt.close()
 
 
 def superposer_lois(listes, points=None):
@@ -127,7 +127,7 @@ def superposer_lois(listes, points=None):
     plt.xscale('log')
     plt.title('Superposition de lois force-aire')
     plt.savefig("images/superposition_lois.png")
-    plt.show()
+    plt.close()
 
 
 def superposer_loi_points(forces, aires, points, generation, individu_score,
@@ -168,7 +168,7 @@ def superposer_loi_points(forces, aires, points, generation, individu_score,
     plt.title("Génération " + str(generation)
               + " Score " + str(round((individu_score), 5)))
     plt.savefig("images/loi_generation" + str(n) + ".png")
-    plt.show()
+    plt.close()
 
 
 def superposer_lois_degrade(listes, points=None):
@@ -206,7 +206,7 @@ def superposer_lois_degrade(listes, points=None):
     plt.ylabel('Aire (m²)')
     plt.title('Superposition de lois force-aire')
     plt.savefig("images/superposition_lois.png")
-    plt.show()
+    plt.close()
 
 
 def hauteur(hauteurs, n=None):
@@ -232,7 +232,7 @@ def hauteur(hauteurs, n=None):
     plt.xlabel('Hauteur (\u03BCm)')
     plt.ylabel("Nombre d'occurences")
     plt.savefig("images/hauteurs" + str(n) + ".png")  # Permet de sauvegarder
-    plt.show()
+    plt.close()
 
 
 def score(scores, n=None):
@@ -255,7 +255,7 @@ def score(scores, n=None):
     plt.xlabel('Génération')
     plt.ylabel('Score')
     plt.savefig('images/scores' + str(n) + '.png')
-    plt.show()
+    plt.close()
 
 
 def score_log(scores):
@@ -278,7 +278,7 @@ def score_log(scores):
     plt.yscale('log')
     if len(scores) == 100:
         plt.savefig('images/scores_log.png')
-    plt.show()
+    plt.close()
 
 
 def superposer_loi_points_normalise(forces, aires, points, generation,
@@ -317,7 +317,7 @@ def superposer_loi_points_normalise(forces, aires, points, generation,
     plt.title("Génération " + str(generation)
               + " Score " + str(round((individu_score), 5)))
     plt.savefig("images/superposition_lois.png")
-    plt.show()
+    plt.close()
 
 
 if __name__ == "__main__":
