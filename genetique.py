@@ -201,7 +201,7 @@ def genetique(points, n=None):
     i = 0  # Numero de la generation
     # while i <= 20 or not liste_score[-20] == liste_score[-1]:
     # while len(liste_score) == 0 or liste_score[-1] > 10**(-8):
-    for i in range(500):
+    for i in range(2000):
         population = nouvelle_generation(population, points)
         meilleur_individu = selection(population)[0]
         # print("Génération : ", i)
@@ -232,7 +232,7 @@ def genetique(points, n=None):
 if __name__ == "__main__":
     # debut = time.time()
     liste = []
-    for n in range(10):
+    for n in range(1):
         hauteurs = genetique([(18384800256 * (90*i+1),
                                18384800256 * (90*i+1) * 3.1069013782046355e-06)
                               for i in range(10)],
